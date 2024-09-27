@@ -1,0 +1,157 @@
+.desktop-layout-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  
+    .stats-section {
+      margin-bottom: 40px;
+  
+      h2 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #1f2833;
+        margin-bottom: 20px;
+      }
+  
+      .stats-cards {
+        display: flex;
+        gap: 20px;
+  
+        .stats-card {
+          background-color: #f8f9fa;
+          padding: 20px;
+          border-radius: 8px;
+          text-align: center;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+          h3 {
+            font-size: 16px;
+            color: #1f2833;
+            margin-bottom: 10px;
+          }
+  
+          p {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1f2833;
+          }
+        }
+      }
+    }
+  
+    .proposals-section {
+      margin-bottom: 40px;
+  
+      h2 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #1f2833;
+        margin-bottom: 20px;
+      }
+  
+      .proposals-cards {
+        display: flex;
+        gap: 20px;
+  
+        .proposal-card {
+          background-color: #f1f4f9;
+          padding: 20px;
+          border-radius: 8px;
+          position: relative;
+          flex: 1;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+          .proposal-id {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1f2833;
+            margin-bottom: 10px;
+          }
+  
+          .proposal-description {
+            h4 {
+              font-size: 16px;
+              color: #1f2833;
+              margin-bottom: 5px;
+            }
+  
+            p {
+              font-size: 14px;
+              color: #6c757d;
+            }
+          }
+  
+          .proposal-actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+  
+            .resume-btn {
+              background-color: #1f2833;
+              color: white;
+              border: none;
+              padding: 8px 16px;
+              border-radius: 4px;
+              cursor: pointer;
+              font-size: 14px;
+              transition: background-color 0.3s ease;
+  
+              &:hover {
+                background-color: #3f4e5c;
+              }
+            }
+  
+            .delete-btn {
+              background: none;
+              color: #ff5f56;
+              border: none;
+              font-size: 14px;
+              cursor: pointer;
+              transition: color 0.3s ease;
+  
+              &:hover {
+                color: #d9534f;
+              }
+            }
+          }
+  
+          .status-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ffc107;
+            padding: 4px 8px;
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  
+    .footer-banner {
+      background-color: #1f2833;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px;
+  
+      p {
+        margin-bottom: 10px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+  
+      a {
+        color: #ffbe76;
+        font-size: 16px;
+        text-decoration: none;
+        font-weight: bold;
+  
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  

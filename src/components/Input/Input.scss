@@ -1,0 +1,38 @@
+.input-container {
+  position: relative;
+  width: 100%;
+
+  input {
+    width: 100%;
+    padding: 25px 10px 8px; /* Top padding increased, and bottom padding adjusted */
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    background-color: #f8f8f8;
+    box-sizing: border-box;
+    line-height: 1.2;
+
+    &:focus {
+      border-color: #003399; /* Highlighted border color when focused */
+    }
+  }
+
+  label {
+    position: absolute;
+    top: 18px; /* Positioned closer to the top for a proper placeholder effect */
+    left: 10px;
+    font-size: 16px;
+    pointer-events: none;
+    transition: all 0.2s ease-in-out;
+    background-color: #f8f8f8;
+  }
+
+  /* When the input is focused or contains a value */
+  &.has-value label,
+  input:focus ~ label {
+    top: 8px; /* Moves the label up */
+    font-size: 12px; /* Reduces font size when the label is positioned at the top */
+  }
+}

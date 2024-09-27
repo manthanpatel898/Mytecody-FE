@@ -1,0 +1,82 @@
+.navbar {
+    background-color: #192655; /* Dark Blueish Gray */
+    position: fixed;
+    top: 60px; /* Adjust based on your header height */
+    left: 0;
+    height: calc(100vh - 60px); /* Full height minus header */
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  
+    .nav-items {
+      list-style: none;
+      padding: 0;
+  
+      .nav-item {
+        a {
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          color: #f5f5f5; /* Off-white for text */
+          padding: 15px 20px;
+          font-size: 18px;
+          transition: background 0.3s ease, color 0.3s ease;
+  
+          svg {
+            margin-right: 15px;
+            color: #ffffff; /* White for icons */
+          }
+  
+          &:hover {
+            background-color: #4f6277; /* Lighter shade for hover */
+            color: #ffbe76; /* Soft orange accent on hover */
+          }
+  
+          &.active {
+            background-color: #4f6277; /* Active background */
+            border-left: 5px solid #ffbe76; /* Accent color for active state */
+            color: #ffbe76; /* Soft orange for active text */
+          }
+  
+          span {
+            display: inline-block;
+          }
+        }
+      }
+    }
+  
+    &.open {
+      transform: translateX(0); /* Fully visible state */
+    }
+  
+    @media (max-width: 768px) {
+      width: 250px;
+      transform: translateX(-100%); /* Hidden offscreen by default for small screens */
+  
+      .nav-item a span {
+        display: inline-block; /* Display text in small screens when navbar is opened */
+      }
+    }
+  }
+  
+  /* Hamburger icon for small screens */
+  .hamburger-icon {
+    display: none;
+    position: fixed;
+    top: 70px; /* Adjust position */
+    left: 20px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #2d3e50; /* Dark Blueish Gray for hamburger icon */
+    cursor: pointer;
+    z-index: 1001;
+  
+    @media (max-width: 768px) {
+      display: block; /* Show hamburger icon on small screens */
+    }
+  }
+  

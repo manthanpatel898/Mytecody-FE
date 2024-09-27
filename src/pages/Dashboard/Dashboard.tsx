@@ -1,10 +1,13 @@
 import React from 'react';
+import Header from '../Header/Header';
+import Navbar from '../Navbar/Navbar';
+import './Dashboard.scss';
 
 const Dashboard: React.FC = () => {
   return (
-    <div>
-      <h2>Admin Dashboard</h2>
-      {/* Dashboard content goes here */}
+    <div className="dashboard">
+      <Header />
+      <Navbar/>
     </div>
   );
 };

@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
+import './Input.scss';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
+interface InputProps {
+  label: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  type: string; // Add this to handle input type (e.g., 'text', 'password')
 }
 
-const Input: React.FC<InputProps> = ({ label, ...props }) => (
-  <div style={{ marginBottom: '1rem' }}>
-    {label && <label>{label}</label>}
-    <input {...props} style={{ padding: '0.5rem', width: '100%' }} />
-  </div>
-);
+const Input: React.FC<InputProps> = ({ label, value, onChange, type }) => {
+  return (
+    <div className={`input-container ${value ? 'has-value' : ''}`}>
+      <input type={type} value={value} onChange={onChange} />
+      <label>{label}</label>
+    </div>
+  );
+};
 
 export default Input;

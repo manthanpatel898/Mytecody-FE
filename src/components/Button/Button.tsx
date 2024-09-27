@@ -1,23 +1,19 @@
 import React from 'react';
+import './Button.scss';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary';
+interface ButtonProps {
+  type: 'button' | 'submit' | 'reset';
+  children: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', ...props }) => (
-  <button
-    {...props}
-    style={{
-      padding: '0.75rem 1.5rem',
-      backgroundColor: variant === 'primary' ? '#007bff' : '#6c757d',
-      color: '#fff',
-      border: 'none',
-      borderRadius: '0.25rem',
-      cursor: 'pointer',
-    }}
-  >
-    {children}
-  </button>
-);
+const Button: React.FC<ButtonProps> = ({ type, children, onClick, className }) => {
+  return (
+    <button type={type} onClick={onClick} className={`custom-btn ${className}`}>
+      {children}
+    </button>
+  );
+};
 
 export default Button;

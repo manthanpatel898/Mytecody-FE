@@ -1,0 +1,115 @@
+
+//______________________colors____________________________
+$primary-color: #192655;
+$secondary-color: #64697B;
+// white
+$color-white: #ffffff;
+$Light_White: #FCF8EF;
+$color-white-2: #f5f7fc;
+// dark
+$color-dark: #212529;
+$color-dark-2: #1E293B;
+// blue
+$color-light-blue: #F5F7FC;
+$color-light-blue-1: #F2F6FF;
+$color-light-blue-2: #EFF2FD;
+$color-light-blue-3: #0DCDFC;
+$color-light-blue-4: #3378ED;
+$color-light-blue-5: #D7DFFC;
+
+
+
+
+
+
+// gray
+$color-gray: #64697B;
+$color-gray-2: #D9DFED;
+$color-gray-3: #586F6B;
+$color-gray-4:#ADB5BD;
+// yellow
+$color-yellow: #F3B742;
+// red
+$color-red: #E5383B;
+
+
+
+
+//___________________fonts-families________________________
+$font-family-figtree: "Figtree", sans-serif;
+
+//_____________________fonts-size___________________________
+
+$base-font-size: 16px;
+$font-smallest: calc(1rem - 4px); // 12px
+$font-small: calc(1rem - 2px); // 14px
+// $fs-5: calc(1rem + 3px); // 18px
+// $fs-7: calc(1rem + 9px); // 24px
+// $fs-8: calc(1rem + 10px); // 25px
+// $fs-9: calc(1rem + 21px); // 36px
+// $fs-10: calc(1rem + 19px); //34px
+// $fs-11: calc(1rem + 49px); //64px
+// $font-largest: calc(1rem + 62px); // 77px
+$font-heading-4: calc(1rem + 5px); // 20px
+$font-heading-6: calc(1rem - 1px); // 14px
+$font-heading-5: calc(1rem); // 16px
+$font-heading-3: calc(1rem + 7px); // 22px
+$font-heading-2: calc(1rem + 16px); // 32px
+$font-heading-1: calc(1rem + 32px); // 48px
+
+
+//_____________________line-height___________________________
+
+
+$base-line-height: 24px;
+$line-height-14: 14px;
+
+//____________________letter-hspacing_________________________
+
+$letter-spacing-1: 1px;
+$letter-spacing-2: 1px;
+$letter-spacing-3: 1px;
+
+
+
+// Custom Scrollbar Mixins
+@mixin scrollbar {
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color:$Btn_thame2;
+  
+    &::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+      border-radius: 6px;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background:$Accent;
+      border-radius: 5px;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color:$Error;
+      border-radius: 6px;
+      border: 0px solid $White;
+    }
+  }
+  
+  // SCREEN SIZES AND BREAKPOINTS
+  $screen-xs-min: 480px !default; // Extra-small screen / phone
+  $screen-sm-min: 768px !default; // Small screen / tablet
+  $screen-md-min: 1025px !default; // Medium screen / desktop
+  $screen-lg-min: 1366px !default; // Large screen / wide desktop
+  $screen-xl-min: 1600px !default; // Large screen devices
+  $screen-xxl-min: 1800px !default; // Large screen devices
+  
+  // Provide a maximum so media queries do not overlap when required
+  $screen-xxs-max: ($screen-xs-min - 1) !default; // Below from 479px
+  $screen-xs-max: ($screen-sm-min - 1) !default; // Below from 767px
+  $screen-sm-max: ($screen-md-min - 1) !default; // Below from 1024px
+  $screen-991: (991px) !default; // Below from 991px
+  $screen-md-max: ($screen-lg-min - 1) !default; // Below from 1365px
+  $screen-1199: (1199px) !default; // Below from 1199px
+  $screen-lg-max: ($screen-xl-min - 1) !default; // Below from 1599px
+  $screen-xl-max: 1800px !default; // Below from 1799px

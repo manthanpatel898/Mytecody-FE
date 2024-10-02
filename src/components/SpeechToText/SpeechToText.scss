@@ -1,0 +1,73 @@
+@import "../../styles/base/variables.scss";
+
+.macrohone-wrap-main {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    img {
+      cursor: pointer;
+    }
+
+    span {
+      cursor: pointer;
+
+      svg {
+        path {
+          fill: $color-red;
+        }
+      }
+    }
+
+    .macrohone-wrap {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      border-radius: 8px;
+      background-color: $color-light-blue-2;
+      padding-right: 9px;
+
+      .macrohone-wrap-inner {
+        width: 100px;
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        overflow: hidden;
+        font-weight: 600;
+        font-size: 16px;
+        border-right: solid 1px $color-light-blue-5;
+        height: 66px;
+        justify-content: center;
+      }
+
+      .sound-wave {
+        width: 100% !important;
+        height: 66px !important;
+        padding: 0 15px 0 15px;
+      }
+
+      @media screen and (max-width: 767px) {
+        .sound-wave {
+          width: 50% !important;
+        }
+
+        .macrohone-wrap-inner {
+          display: none;
+        }
+      }
+
+      .btn {
+        background: $color-white;
+        border: solid 1px $primary-color;
+        width: 100%;
+        max-width: 150px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: center;
+        padding: 10px 15px;
+        border-radius: 13px;
+        height: 48px;
+      }
+    }
+  }

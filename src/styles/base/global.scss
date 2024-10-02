@@ -1,0 +1,109 @@
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  font-size: $base-font-size;
+}
+body {
+  font-family: $font-family-figtree;
+  color: $primary-color;
+  // line-height: $base-line-height;
+  background-color: $color-white;
+}
+*,
+*:focus {
+  outline: none !important;
+  -webkit-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+img {
+  max-width: 100%;
+  height: auto;
+  image-rendering: -webkit-optimize-contrast;
+}
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+  font-weight: 700;
+}
+h1,
+.h1 {
+  font-size: $font-heading-1; // 48px
+}
+h2,
+.h2 {
+  font-size: $font-heading-2; //32px
+}
+h3,
+.h3 {
+  font-size: $font-heading-3; // 22px
+}
+// h4,
+// .h4 {
+//   font-size: $font-heading-4; // 20px
+// }
+h5,
+.h5 {
+  font-size: $font-heading-5; //16 px
+}
+// h6,
+// .h6 {
+//   font-size: $font-heading-6; // 14px
+// }
+
+// scrollbar css start
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px $color-light-blue-5;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $color-light-blue-5;
+  border: 0;
+}
+// scrollbar css end
+
+// input-placeholder css start
+::-webkit-input-placeholder {
+  color: $color-dark;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+  color: $color-dark;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+  color: $color-dark;  
+}
+
+:-ms-input-placeholder {  
+  color: $color-dark;  
+}
+
+// input-placeholder css end

@@ -1,0 +1,13 @@
+.content-area{
+  top: 60px;
+  position: fixed;
+  left: 250px;
+  width: 85%;
+}
+
+@media (max-width: 768px) {
+  .content-area {
+    left:0;
+    width: 100%;
+  }
+}

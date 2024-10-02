@@ -18,9 +18,14 @@
   color: #666;
 
   span {
-    color: #003399;
+    color: #192655;
     cursor: pointer;
     font-weight: bold;
+    text-wrap: nowrap;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
@@ -46,5 +51,68 @@
     height: 1px;
     background-color: #ccc;
     z-index: 0;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .input-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    .input-container {
+      flex: 1; // This will allow the input containers to take equal space
+      position: relative;
+      
+      input {
+        width: 100%; // Input takes up the full width of the container
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        color: #333;
+  
+        &:focus {
+          border-color: #0066cc;
+        }
+      }
+    }
+
+    .password-container {
+      position: relative;
+      display: flex;
+      width: 100%;
+      
+      .toggle-password {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #888;
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+
+  // Adjust input widths to be in a single line for large screens
+  @media (min-width: 768px) {
+    .input-row {
+      flex-direction: row;
+    }
+  }
+
+  // For smaller screens, stack the input containers vertically
+  @media (max-width: 768px) {
+    .input-row {
+      flex-direction: column;
+    }
   }
 }

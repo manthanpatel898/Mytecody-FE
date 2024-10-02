@@ -7,22 +7,51 @@
     min-height: 100vh;
 }
 
+.login-page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f7faff;
+    font-family: 'Poppins', sans-serif;
+    background: url('../assets/images/back.jpg');
+    background-size: cover;
+  }
+  
+  // Container for the login box with shadow and border-radius
+  .login-container {
+    display: flex;
+    width: 70%;
+    height: 550px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: #ffffff;
+    @media (max-width: 768px) {
+      width: 95%;
+      height: 97vh;
+    }
+  }
 .form-box{
     background-color: white;
-      padding: 40px;
+      padding: 30px 40px;
       border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       width: 600px; 
       text-align: center;
+      margin: auto;
+      @media (max-width: 768px) {
+      overflow-y: auto;
+      max-height: 90%;
+      }
     h1{
         font-size: 2rem;
-        margin-bottom: 10px;
+        margin: 0px;
         color: #192655;
     }
 
     p{
-        font-size: 1rem;
-        color: #666;
+        font-size: 1.2rem;
+        color: #192655;
         margin:10px 0;
     }
 

@@ -4,6 +4,7 @@ import Button from '../../components/Button/Button';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import './ResetPasswordPage.scss';
+import ModalInfo from '../../components/ModalInfo/ModalInfo';
 import '../common.scss';
 
 const ResetPasswordPage: React.FC = () => {
@@ -26,8 +27,10 @@ const ResetPasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="main-container">
-      <div className="form-box">
+    <div className="login-page">
+    {/* Left Side: Login Form */}
+    <div className="login-container">
+    <div className="form-box">
         <div className="back-button" onClick={handleBackClick}>
           <FaArrowLeft /> Back to Forgot Password
         </div>
@@ -49,6 +52,11 @@ const ResetPasswordPage: React.FC = () => {
           <Button type="submit">Reset Password</Button>
         </form>
       </div>
+   
+  
+      {/* Right Side: AI-themed Info Section */}
+      <ModalInfo/>
+    </div>
     </div>
   );
 };

@@ -1,0 +1,79 @@
+@import "../../../styles/base/variables.scss";
+
+.requirement-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  /* Full height to enable proper layout */
+  .conversation-content {
+    .title-img {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
+  .conversation-button {
+    border-top: solid $color-gray-2 1px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 10px;
+    position: relative;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+
+    @media screen and (max-width: 1025px) {
+      justify-content: center;
+    }
+
+    @media screen and (max-width: 1025px) {}
+    .btn {
+      background: $color-white;
+      border: solid 1px $primary-color;
+      min-width: 208px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      padding: 15px 15px;
+      border-radius: 24px;
+
+      @media screen and (max-width: 767px) {
+        min-width: 150px;
+        gap: 10px;
+        font-size: 12px;
+
+      }
+
+      &.getStartedBtn {
+        // min-width: 350px;
+        color: $Light_White;
+
+        svg path {
+          fill: $Light_White;
+        }
+
+
+      }
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+
+  .conversation-microphone {
+    width: 100%;
+  }
+}

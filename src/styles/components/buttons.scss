@@ -1,0 +1,45 @@
+/********* Buttons ******************/
+.btn {
+    -moz-transition: all 0.3s ease-in;
+    -webkit-transition: all 0.3s ease-in;
+    -o-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+    text-decoration: none !important;
+    font-size: $base-font-size;
+    font-family: $font-family-figtree;
+    font-weight: 700;
+    padding: 17px 35px;
+    border-radius: 9999px;
+    cursor: pointer;
+    &:focus {
+        outline: none !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+    }
+   
+    // button primary (blue background)
+    &.btn-primary {
+        background-color: $primary-color !important;
+        color: $Light_White !important;
+        &:focus,
+        &:hover {
+            background-color: $primary-color !important;
+            color: $Light_White !important;
+        }
+    }
+    &.btn-outline-dark {
+        border: 2px solid $color-dark;
+        border-color: $color-dark !important;
+        color: $color-dark-2 !important;
+    }
+    &.btn-yellow {
+        border: 0;
+        background-color: $color-yellow;
+        color: $color-white !important;
+    }
+    &.btn-gray {
+        border: 0;
+        background-color: $color-gray-3;
+        color: $color-white !important;
+    }
+}

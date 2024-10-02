@@ -1,157 +1,245 @@
-.desktop-layout-container {
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full height to enable proper layout */
+
+  .stats-section {
+    flex-shrink: 0; /* Prevents the stats section from shrinking */
+    position: sticky; /* Sticky to stay at the top while scrolling */
+    top: 0;
+    background-color: #ffffff;
     padding: 20px;
-    font-family: Arial, sans-serif;
-  
-    .stats-section {
-      margin-bottom: 40px;
-  
-      h2 {
-        font-size: 24px;
-        font-weight: 600;
-        color: #1f2833;
-        margin-bottom: 20px;
-      }
-  
-      .stats-cards {
-        display: flex;
-        gap: 20px;
-  
-        .stats-card {
-          background-color: #f8f9fa;
-          padding: 20px;
-          border-radius: 8px;
-          text-align: center;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
-          h3 {
-            font-size: 16px;
-            color: #1f2833;
-            margin-bottom: 10px;
-          }
-  
-          p {
-            font-size: 32px;
-            font-weight: bold;
-            color: #1f2833;
-          }
-        }
-      }
+    z-index: 1;
+
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #192655;
+      margin-bottom: 20px;
     }
-  
-    .proposals-section {
-      margin-bottom: 40px;
-  
-      h2 {
-        font-size: 24px;
-        font-weight: 600;
-        color: #1f2833;
-        margin-bottom: 20px;
-      }
-  
-      .proposals-cards {
-        display: flex;
-        gap: 20px;
-  
-        .proposal-card {
-          background-color: #f1f4f9;
-          padding: 20px;
-          border-radius: 8px;
-          position: relative;
-          flex: 1;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
-          .proposal-id {
-            font-size: 14px;
-            font-weight: bold;
-            color: #1f2833;
-            margin-bottom: 10px;
-          }
-  
-          .proposal-description {
-            h4 {
-              font-size: 16px;
-              color: #1f2833;
-              margin-bottom: 5px;
-            }
-  
-            p {
-              font-size: 14px;
-              color: #6c757d;
-            }
-          }
-  
-          .proposal-actions {
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-  
-            .resume-btn {
-              background-color: #1f2833;
-              color: white;
-              border: none;
-              padding: 8px 16px;
-              border-radius: 4px;
-              cursor: pointer;
-              font-size: 14px;
-              transition: background-color 0.3s ease;
-  
-              &:hover {
-                background-color: #3f4e5c;
-              }
-            }
-  
-            .delete-btn {
-              background: none;
-              color: #ff5f56;
-              border: none;
-              font-size: 14px;
-              cursor: pointer;
-              transition: color 0.3s ease;
-  
-              &:hover {
-                color: #d9534f;
-              }
-            }
-          }
-  
-          .status-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #ffc107;
-            padding: 4px 8px;
-            color: white;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-          }
+
+    .stats-cards {
+      display: flex;
+      justify-content: space-between;
+
+      .stat-card {
+        background-color: #f7faff;
+        border-radius: 12px;
+        padding:0 20px;
+        flex: 1;
+        margin-right: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+        &:last-child {
+          margin-right: 0;
         }
-      }
-    }
-  
-    .footer-banner {
-      background-color: #1f2833;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      border-radius: 8px;
-  
-      p {
-        margin-bottom: 10px;
-        font-size: 18px;
-        font-weight: 600;
-      }
-  
-      a {
-        color: #ffbe76;
-        font-size: 16px;
-        text-decoration: none;
-        font-weight: bold;
-  
-        &:hover {
-          text-decoration: underline;
+
+        h4 {
+          font-size: 16px;
+          color: #192655;
+          margin-bottom: 10px;
+        }
+
+        p {
+          font-size: 24px;
+          font-weight: bold;
+          color: #64697B;
         }
       }
     }
   }
-  
+
+  .content-section {
+    flex: 1;
+    overflow-y: auto; /* This makes only the proposal cards scroll */
+    padding: 20px;
+    padding-bottom: 80px; /* To ensure enough space for the fixed footer */
+    
+    .proposals-section {
+      margin-bottom: 40px;
+
+      h2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #192655;
+        margin-bottom: 20px;
+      }
+
+      .proposal-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .proposal-card {
+        background-color: #f7faff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+        .proposal-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 15px;
+
+          .proposal-number {
+            font-size: 18px;
+            font-weight: bold;
+            color: #192655;
+          }
+
+          .status-badge {
+            font-size: 14px;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+
+            &.in-progress {
+              background-color: #ffce54;
+              color: #fff;
+            }
+
+            &.completed {
+              background-color: #4dbd74;
+              color: #fff;
+            }
+          }
+        }
+
+        .proposal-info {
+          font-size: 16px;
+          color: #555;
+          margin-bottom: 20px;
+          line-height: 25px;
+        }
+
+        .action-buttons {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        
+          .btn {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+        
+            svg {
+              margin-right: 10px;  /* Adjust margin between icon and text */
+              font-size: 16px; /* Adjust icon size */
+            }
+        
+            &.resume-btn, &.download-btn, &.email-btn {
+              background-color: #192655;
+              color: #fff;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+        
+              &:hover {
+                background-color: #142048;
+              }
+            }
+        
+            &.delete-btn {
+              background-color: transparent;
+              color: #f86c6b;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: 10px 15px;
+        
+              svg {
+                margin-right: 5px;  /* Reduce space between icon and text */
+                color: #f86c6b;
+                font-size: 18px; /* Increase the size for better visibility */
+              }
+        
+              &:hover {
+                background-color: transparent;
+                color: #d9534f;
+        
+                svg {
+                  color: #d9534f;
+                }
+              }
+            }
+          }
+        }
+        
+      }
+    }
+
+    .pagination-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      padding-bottom: 60px;
+
+      button {
+        background-color: #192655;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        margin: 0 10px;
+        cursor: pointer;
+        font-weight: bold;
+
+        &:disabled {
+          background-color: #ccc;
+          cursor: not-allowed;
+        }
+      }
+
+      span {
+        font-size: 16px;
+        color: #555;
+      }
+    }
+  }
+
+  .footer-section {
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+
+    .footer-btn {
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #192655;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #142048;
+      }
+    }
+
+    span {
+      font-size: 10px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .proposal-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+}

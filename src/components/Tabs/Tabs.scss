@@ -1,0 +1,60 @@
+@import "../../styles/base/variables.scss";
+
+.tabWrapper {
+  padding-bottom: 20px;
+  overflow: hidden;
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #fff;
+  padding: 10px 0;
+
+  ul {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #d9dfed;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    scroll-snap-type: x mandatory; /* Enable snap scrolling */
+    white-space: nowrap; /* Prevent tabs from wrapping */
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+
+    @media screen and (max-width: 1025px) {
+      justify-content: flex-start;
+    }
+  }
+
+  ul::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Webkit browsers */
+  }
+
+  li {
+    padding: 10px;
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+    width: auto; /* Auto width for each tab */
+    scroll-snap-align: center; /* Align the tab in the center when scrolling */
+    cursor: pointer;
+    transition: border-color 0.3s ease-in-out;
+    margin-right: 10px;
+  }
+
+  li.active {
+    border-bottom: 2px solid $primary-color;
+  }
+}
+
+/* Ensure the scroll snap behavior works on mobile */
+@media (max-width: 600px) {
+  .tabWrapper ul {
+    scroll-snap-type: x mandatory; /* Ensure snap scrolling works on mobile */
+  }
+
+  .tabWrapper ul li {
+    scroll-snap-align: center; /* Center the tab when scrolling */
+  }
+}

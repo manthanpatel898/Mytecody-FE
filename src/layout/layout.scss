@@ -1,0 +1,29 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    
+    .layout-content {
+      display: flex;
+      flex: 1;
+    }
+  
+    .layout-main {
+      flex: 1;
+      padding: 20px;
+      background-color: #f4f4f4;
+      overflow-y: auto;
+    }
+  
+    /* Mobile adjustments */
+    @media (max-width: 1024px) {
+      .layout-content {
+        flex-direction: column;
+      }
+  
+      .layout-main {
+        padding: 15px;
+      }
+    }
+  }
+  

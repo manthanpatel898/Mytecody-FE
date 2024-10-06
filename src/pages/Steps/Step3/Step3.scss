@@ -1,6 +1,99 @@
-.step2-container {
+@import "../../../styles/base/variables.scss";
+
+.business-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full height to enable proper layout */
+  height: 100vh;
 
+  /* Full height to enable proper layout */
+  .business-details-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+
+    @media screen and (max-width: 767px) {
+      padding: 0;
+    }
+
+    .content-inner-wrap {
+      background: $color-light-blue-2;
+      padding: 24px;
+      border-radius: 24px;
+      p {
+          font-size: 16px;
+          padding-bottom: 24px;
+          line-height: 180%;
+      }
+      h3 {
+          font-size: 16px;
+          font-weight: bold;
+          letter-spacing: 0.64px;
+          margin-bottom: 4px;
+          line-height: 145%;
+      }
+      .form-control {
+          max-width: 342px;
+          height: 48px;
+          border: none;
+          padding: 16px;
+          border-radius: 8px;
+          width: 100%;
+          font-size: 16px;
+          color: $color-dark;
+          border:$color-white solid 1px;
+          background: $color-white;
+          &:focus {
+              border-color: $color-dark;
+          }
+          &.disabled{
+              pointer-events: none;
+              background: $color-white;
+          }
+      }
+  }
+
+    .title-img {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+
+      h1 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #192655;
+        margin-right: 10px;
+      }
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+
+      @media screen and (max-width: 767px) {
+        h1 {
+          font-size: 20px;
+        }
+
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+  }
+
+  .spinner-ldr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  }
 }

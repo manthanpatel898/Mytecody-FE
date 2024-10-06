@@ -4,8 +4,8 @@ import Button from '../../components/Button/Button';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import './ResetPasswordPage.scss';
-import ModalInfo from '../../components/ModalInfo/ModalInfo';
 import '../common.scss';
+import ModalInfo from '../../components/ModalInfo/ModalInfo';
 
 const ResetPasswordPage: React.FC = () => {
   const [password, setPassword] = useState('');

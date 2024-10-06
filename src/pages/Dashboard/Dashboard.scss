@@ -1,11 +1,11 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full height to enable proper layout */
+  height: 100vh; /* Full height of the viewport */
 
   .stats-section {
-    flex-shrink: 0; /* Prevents the stats section from shrinking */
-    position: sticky; /* Sticky to stay at the top while scrolling */
+    flex-shrink: 0;
+    position: sticky;
     top: 0;
     background-color: #ffffff;
     padding: 20px;
@@ -21,12 +21,24 @@
     .stats-cards {
       display: flex;
       justify-content: space-between;
+      overflow-x: auto; /* Enable horizontal scroll for stats on small screens */
+      scrollbar-width: thin;
+
+      &::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #cccccc;
+        border-radius: 6px;
+      }
 
       .stat-card {
         background-color: #f7faff;
         border-radius: 12px;
-        padding:0 20px;
+        padding: 0 20px;
         flex: 1;
+        min-width: 200px;
         margin-right: 20px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
@@ -43,7 +55,7 @@
         p {
           font-size: 24px;
           font-weight: bold;
-          color: #64697B;
+          color: #64697b;
         }
       }
     }
@@ -51,24 +63,71 @@
 
   .content-section {
     flex: 1;
-    overflow-y: auto; /* This makes only the proposal cards scroll */
-    padding: 20px;
-    padding-bottom: 80px; /* To ensure enough space for the fixed footer */
-    
-    .proposals-section {
-      margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px 20px;
+    overflow: hidden; /* Ensures that the content section handles overflow */
+
+    .proposals-header {
+      position: sticky;
+      top: 0;
+      background-color: white;
+      padding: 10px 0;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e0e0e0;
 
       h2 {
         font-size: 24px;
         font-weight: bold;
         color: #192655;
-        margin-bottom: 20px;
+      }
+
+      .add-proposal-icon-container {
+        width: 40px;
+        height: 40px;
+        background-color: #192655;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        .add-proposal-icon {
+          font-size: 24px;
+          color: white;
+        }
+      }
+    }
+
+    .proposal-list {
+      flex: 1; /* Allow the proposal list to take up remaining space */
+      overflow-y: auto; /* Enable vertical scrolling */
+      margin-top: 20px;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #cccccc;
+        border-radius: 6px;
+      }
+
+      .proposal-token {
+        
       }
 
       .proposal-cards {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid layout */
         gap: 20px;
+
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr; /* Single column layout for small screens */
+        }
       }
 
       .proposal-card {
@@ -119,7 +178,7 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
-        
+
           .btn {
             display: flex;
             align-items: center;
@@ -130,42 +189,32 @@
             cursor: pointer;
             transition: background-color 0.3s;
             border: none;
-        
+
             svg {
-              margin-right: 10px;  /* Adjust margin between icon and text */
-              font-size: 16px; /* Adjust icon size */
+              margin-right: 10px;
+              font-size: 16px;
             }
-        
+
             &.resume-btn, &.download-btn, &.email-btn {
               background-color: #192655;
               color: #fff;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-        
+
               &:hover {
                 background-color: #142048;
               }
             }
-        
+
             &.delete-btn {
               background-color: transparent;
               color: #f86c6b;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              padding: 10px 15px;
-        
+
               svg {
-                margin-right: 5px;  /* Reduce space between icon and text */
+                margin-right: 5px;
                 color: #f86c6b;
-                font-size: 18px; /* Increase the size for better visibility */
               }
-        
+
               &:hover {
-                background-color: transparent;
                 color: #d9534f;
-        
                 svg {
                   color: #d9534f;
                 }
@@ -173,73 +222,36 @@
             }
           }
         }
-        
-      }
-    }
-
-    .pagination-controls {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 20px;
-      padding-bottom: 60px;
-
-      button {
-        background-color: #192655;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        margin: 0 10px;
-        cursor: pointer;
-        font-weight: bold;
-
-        &:disabled {
-          background-color: #ccc;
-          cursor: not-allowed;
-        }
-      }
-
-      span {
-        font-size: 16px;
-        color: #555;
       }
     }
   }
 
-  .footer-section {
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 60px;
 
-    .footer-btn {
-      padding: 12px 25px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #fff;
+    button {
       background-color: #192655;
-      border-radius: 8px;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      margin: 0 10px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      font-weight: bold;
 
-      &:hover {
-        background-color: #142048;
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
       }
     }
 
     span {
-      font-size: 10px;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .proposal-cards {
-      grid-template-columns: 1fr;
+      font-size: 16px;
+      color: #555;
     }
   }
 }

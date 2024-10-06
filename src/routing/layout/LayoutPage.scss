@@ -2,7 +2,7 @@
   top: 60px;
   position: fixed;
   left: 250px;
-  width: 85%;
+  width:-webkit-fill-available;
 }
 
 @media (max-width: 768px) {

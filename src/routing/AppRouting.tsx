@@ -19,8 +19,9 @@ const AppRouting = () => {
     <Routes>
       {/* Private route start */}
       <Route path="/" element={<PrivateLayout />}>
-        <Route path="/" element={<Layout />}>
-          
+        <Route element={<LayoutPage />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/steps" element={<Steps />} />
         </Route>
       </Route>
       {/* Private route end */}
@@ -32,10 +33,7 @@ const AppRouting = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/register" element={<Register />} />
-        <Route element={<LayoutPage />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/steps" element={<Steps />} />
-        </Route>
+
       </Route>
       {/* Public route end */}
 

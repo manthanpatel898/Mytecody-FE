@@ -1,73 +1,229 @@
 @import "../../styles/base/variables.scss";
 
+// .macrohone-wrap-main {
+//     display: flex;
+//     align-items: center;
+//     gap: 24px;
+//     position: absolute;
+//     bottom: 30%;
+//     width: -webkit-fill-available;
+//     padding-right: 30px;
+
+//     img {
+//       cursor: pointer;
+//     }
+
+//     span {
+//       cursor: pointer;
+
+//       svg {
+//         path {
+//           fill: $color-red;
+//         }
+//       }
+//     }
+
+//     .macrohone-wrap {
+//       display: flex;
+//       align-items: center;
+//       width: 100%;
+//       border-radius: 8px;
+//       background-color: $color-light-blue-2;
+//       padding-right: 9px;
+
+//       .macrohone-wrap-inner {
+//         width: 100px;
+//         display: flex;
+//         align-items: center;
+//         padding: 15px;
+//         overflow: hidden;
+//         font-weight: 600;
+//         font-size: 16px;
+//         border-right: solid 1px $color-light-blue-5;
+//         height: 66px;
+//         justify-content: center;
+//       }
+
+//       .sound-wave {
+//         width: 100% !important;
+//         height: 66px !important;
+//         padding: 0 15px 0 15px;
+//       }
+
+//       @media screen and (max-width: 767px) {
+//         .sound-wave {
+//           width: 50% !important;
+//         }
+
+//         .macrohone-wrap-inner {
+//           display: none;
+//         }
+//       }
+
+//       .btn {
+//         background: $color-white;
+//         border: solid 1px $primary-color;
+//         width: 100%;
+//         max-width: 150px;
+//         display: flex;
+//         align-items: center;
+//         gap: 8px;
+//         justify-content: center;
+//         padding: 10px 15px;
+//         border-radius: 13px;
+//         height: 48px;
+//         font-size: 18px;
+//         font-weight: bold;
+//       }
+//     }
+//   }
+
 .macrohone-wrap-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 30px;
+  @media screen and (max-width: 767px) {
+  padding-right: 8px;
+  }
+
+  .macrohone-wrap {
     display: flex;
     align-items: center;
-    gap: 24px;
+    width: 100%;
+    border-radius: 8px;
+    background-color: $color-light-blue-2;
+    padding-right: 9px;
 
-    img {
-      cursor: pointer;
+    .macrohone-wrap-inner {
+      width: 100px;
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      font-weight: 600;
+      font-size: 16px;
+      border-right: solid 1px $color-light-blue-5;
+      height: 66px;
+      justify-content: center;
     }
 
-    span {
-      cursor: pointer;
-
-      svg {
-        path {
-          fill: $color-red;
-        }
+    .sound-wave {
+      width: 80%; /* Make sound-wave take 80% to leave space for the button */
+      height: 66px !important;
+      padding: 0 15px;
+      @media screen and (max-width: 767px) {
+      width: 40%;
       }
+
+    }
+
+    .btn {
+      background: $color-white;
+      border: solid 1px $primary-color;
+      width: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 15px;
+      border-radius: 13px;
+      height: 48px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+
+  .icons-container {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-right: 10px;
+    margin-left: 15px;
+
+    .mic-icon, .close-icon {
+      cursor: pointer;
+    }
+  }
+
+  /* Responsive: On small screens, icons will go below the progress bar */
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+
+    .icons-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 10px; /* Move icons below the progress bar */
     }
 
     .macrohone-wrap {
-      display: flex;
-      align-items: center;
+      flex-direction: row;
+      justify-content: space-between;
       width: 100%;
-      border-radius: 8px;
-      background-color: $color-light-blue-2;
-      padding-right: 9px;
+      height: 65%;
+    }
 
-      .macrohone-wrap-inner {
-        width: 100px;
-        display: flex;
-        align-items: center;
-        padding: 15px;
-        overflow: hidden;
-        font-weight: 600;
-        font-size: 16px;
-        border-right: solid 1px $color-light-blue-5;
-        height: 66px;
-        justify-content: center;
-      }
+    .macrohone-wrap-inner {
+      margin: 10px 0;
+      height: 0 !important;
+    }
 
-      .sound-wave {
-        width: 100% !important;
-        height: 66px !important;
-        padding: 0 15px 0 15px;
-      }
-
-      @media screen and (max-width: 767px) {
-        .sound-wave {
-          width: 50% !important;
-        }
-
-        .macrohone-wrap-inner {
-          display: none;
-        }
-      }
-
-      .btn {
-        background: $color-white;
-        border: solid 1px $primary-color;
-        width: 100%;
-        max-width: 150px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        justify-content: center;
-        padding: 10px 15px;
-        border-radius: 13px;
-        height: 48px;
-      }
+    .btn {
+      max-width: 100px; /* Reduce button width to ensure it fits on small screens */
+      font-size: 14px;
     }
   }
+
+  /* Desktop view: everything in one line */
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+
+    .macrohone-wrap {
+      justify-content: flex-end; /* Keep the progress bar and button on the right */
+    }
+
+    .icons-container {
+      order: -1; /* Icons stay to the left */
+    }
+  }
+}
+
+.mic-icon {
+  position: relative; /* Set this to relative to position the ripple absolutely within the parent */
+  display: inline-block; /* To prevent affecting layout */
+  z-index: 1; /* Ensures this is rendered on top */
+
+  .microphone-icon-container {
+    position: relative; /* The ripple will be positioned relative to this container */
+    display: inline-block;
+
+    .ripple {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px; /* Adjust size of ripple */
+      height: 100px; /* Adjust size of ripple */
+      border-radius: 50%;
+      background: rgba(0, 128, 0, 0.4); /* Green ripple color */
+      animation: ripple-animation 1s ease-out infinite; /* Ripple effect animation */
+      z-index: -1; /* Place behind the microphone icon */
+    }
+
+    .microphone-icon {
+      position: relative; /* Make sure this stays above the ripple */
+      z-index: 1;
+    }
+  }
+}
+
+@keyframes ripple-animation {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5); /* Start small */
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.5); /* Grow large */
+    opacity: 0; /* Fade out */
+  }
+}
+

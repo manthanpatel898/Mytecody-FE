@@ -5,7 +5,7 @@ import { getItem } from "../utils/localstorage-service";
 // Set up the base URL and axios instance
 export const http = axios.create({
   baseURL: process.env.REACT_APP_API_URL, // Make sure to have this environment variable set up
-  timeout: 10000, // Set a timeout for requests
+  timeout: 100000, // Set a timeout for requests
   headers: {
     "Content-Type": "application/json",
   },
@@ -36,13 +36,14 @@ http.interceptors.response.use(
     if (status === 401) {
       // Handle unauthorized errors
       toast.error("Unauthorized access. Please login again.");
+      localStorage.clear()
       // Optionally, redirect to login page or perform any logout action
     } else if (status === 500) {
       // Handle server errors
       toast.error("Internal Server Error. Please try again later.");
     } else if (status === 404) {
       // Handle not found errors
-      toast.error("Resource not found.");
+      // toast.error("Resource not found.");
     } 
     // else if (status) {
     //   // Handle other errors with specific messages from API response

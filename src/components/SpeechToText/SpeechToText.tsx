@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import useSpeechToText, { ResultType } from "react-hook-speech-to-text";
 import { CloseIcon } from "../../assets/cancel";
 import "./SpeechToText.scss";
 import spinner from "../../assets/spinner.svg";
 import { MicrophoneIcon } from "../../assets/microphone_icon";
 import { ReactMic } from "react-mic";
+import { TrueIcon } from "../../assets/true_icon"; // import the TrueIcon
 
 interface AppProps {
   updateResults: (results: string) => void;
   isplay: boolean;
   setIsplay: (value: boolean) => void;
-  setBtnSubmit: (value: boolean) => void;
+  setBtnProcess: (value: boolean) => void;
   setresetMessage: boolean;
   setIsRecording: (value: boolean) => void;
   isLoadingProcess: boolean;
@@ -18,7 +19,7 @@ interface AppProps {
 
 const SpeechToText: React.FC<AppProps> = ({
   updateResults,
-  setBtnSubmit,
+  setBtnProcess,
   isplay,
   setIsplay,
   setresetMessage,
@@ -42,6 +43,27 @@ const SpeechToText: React.FC<AppProps> = ({
   });
 
   const [timer, setTimer] = useState({ minutes: "00", seconds: "00" });
+  const [isMobile, setIsMobile] = useState(false);
+  const processTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    // Check if the screen is mobile size
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    // Initial check
+    handleResize();
+
+    // Add event listener to handle screen resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
 
   const isBrowserSupported =
     typeof window !== "undefined" &&
@@ -80,25 +102,25 @@ const SpeechToText: React.FC<AppProps> = ({
     // Check if results array exists and has data
     if (results && results.length > 0) {
       let latestTranscript = "";
-  
+
       // Iterate over the results array
       for (let i = results.length - 1; i >= 0; i--) {
         const result = results[i];
-  
+
         // Check if the result is of type ResultType (i.e., an object with a transcript property)
         if (typeof result !== "string" && result.transcript) {
           latestTranscript = result.transcript;
           break; // Exit the loop after finding the latest valid transcript
         }
       }
-  
+
       // Check if the transcript exists and is not empty
       if (latestTranscript.trim() !== "") {
         updateResults(latestTranscript); // Send the transcript to updateResults
       }
     }
   }, [results, updateResults]);
-  
+
   useEffect(() => {
     setResults([]);
   }, [setresetMessage, setResults]);
@@ -112,58 +134,135 @@ const SpeechToText: React.FC<AppProps> = ({
   }, [error]);
 
   // Stop recording and handle microphone click
-  const handleMicClick = () => {
-    stopSpeechToText();
-    setIsplay(false);
-  };
+ // Handler to stop speech recognition
+ const handleStopSpeech = useCallback(() => {
+  stopSpeechToText();
+  setIsplay(false);
+}, [stopSpeechToText, setIsplay, setBtnProcess]);
 
+// Handler to stop speech recognition with delayed setBtnProcess(true)
+const handleProcessConversation = useCallback(() => {
+  stopSpeechToText();      // Stop speech recognition
+  setIsplay(false);        // Update isplay state
+
+  // Set a 1-second delay before setting btnSubmit to true
+  processTimeoutRef.current = setTimeout(() => {
+    setBtnProcess(true);
+  }, 1000); // 1000 milliseconds = 1 second
+}, [stopSpeechToText, setIsplay, setBtnProcess]);
+
+// Cleanup timeout on component unmount to prevent memory leaks
+useEffect(() => {
+  return () => {
+    if (processTimeoutRef.current) {
+      clearTimeout(processTimeoutRef.current);
+    }
+  };
+}, []);
   if (!isBrowserSupported) {
     return <div>Your browser does not support speech recognition.</div>;
   }
 
   return (
+    // <div className="speech-to-text-container">
+    //   <div className="macrohone-wrap-main">
+    //     <div>
+    //     <div onClick={isRecording ? stopSpeechToText : startSpeechToText}>
+    //       <MicrophoneIcon color={isRecording ? "green" : "red"} />
+    //     </div>
+    //     <div onClick={handleMicClick}>
+    //       <CloseIcon color="red" />
+    //     </div>
+    //     </div>
+    //     <div className="macrohone-wrap">
+    //       <div className="macrohone-wrap-inner">
+    //         {timer.minutes}:{timer.seconds}
+    //       </div>
+    //       <ReactMic
+    //         record={isRecording}
+    //         className="sound-wave"
+    //         strokeColor="#000000"
+    //         backgroundColor="#EFF2FD"
+    //         mimeType="audio/wav"
+    //         visualSetting="sinewave"
+    //       />
+    //       <button
+    //         onClick={() => {
+    //           setBtnSubmit(true);
+    //           stopSpeechToText();
+    //         }}
+    //         className="btn"
+    //       >
+    //         {isLoadingProcess ? (
+    //           <img src={spinner} alt="Loading" width={24} />
+    //         ) : (
+    //           "Process"
+    //         )}
+    //       </button>
+    //     </div>
+    //   </div>
+    // </div>
+
     <div className="speech-to-text-container">
       <div className="macrohone-wrap-main">
-        <div onClick={isRecording ? stopSpeechToText : startSpeechToText}>
-          <MicrophoneIcon color={isRecording ? "green" : "red"} />
-        </div>
-        <div onClick={handleMicClick}>
-          <CloseIcon color="red" />
-        </div>
-        <div className="macrohone-wrap">
-          <div className="macrohone-wrap-inner">
-            {timer.minutes}:{timer.seconds}
+        {!isMobile && (
+          <div className="icons-container">
+            <div onClick={isRecording ? stopSpeechToText : startSpeechToText}>
+              <MicrophoneIcon color={isRecording ? "green" : "red"} />
+            </div>
+            <div onClick={handleStopSpeech}>
+              <CloseIcon color="red" />
+            </div>
           </div>
-          <ReactMic
-            record={isRecording}
-            className="sound-wave"
-            strokeColor="#000000"
-            backgroundColor="#EFF2FD"
-            mimeType="audio/wav"
-            visualSetting="sinewave"
-          />
-          <button
-            onClick={() => {
-              setBtnSubmit(true);
-              stopSpeechToText();
-            }}
-            className="btn"
-          >
-            {isLoadingProcess ? (
-              <img src={spinner} alt="Loading" width={24} />
-            ) : (
-              "Process"
-            )}
-          </button>
-        </div>
+        )}
+        {!isMobile && (
+          <div className="macrohone-wrap">
+            <div className="macrohone-wrap-inner">
+              {timer.minutes}:{timer.seconds}
+            </div>
+            <ReactMic
+              record={isRecording}
+              className="sound-wave"
+              strokeColor="#000000"
+              backgroundColor="#EFF2FD"
+              mimeType="audio/webm"
+              visualSetting="sinewave"
+            />
+            <button
+              onClick={handleProcessConversation}
+              className="btn"
+            >
+              {isLoadingProcess ? (
+                <img src={spinner} alt="Loading" width={24} />
+              ) : (
+                "Process"
+              )}
+            </button>
+          </div>
+        )}
+
+        {isMobile && (
+          <div className="icons-container">
+            <div onClick={isRecording ? stopSpeechToText : startSpeechToText} className="mic-icon">
+              {isRecording ? (
+                <div className="microphone-icon-container">
+                  <div className="ripple"></div>
+                  <MicrophoneIcon color="green" className="microphone-icon" />
+                </div>
+              ) : (
+                <MicrophoneIcon color="red" className="microphone-icon" />
+              )}
+            </div>
+
+
+            <div onClick={handleProcessConversation} className="close-icon">
+              <TrueIcon color="red" />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
-
-// Type guard to ensure results are of type ResultType
-function isResultType(result: string | ResultType): result is ResultType {
-  return typeof result !== "string";
-}
 
 export default SpeechToText;

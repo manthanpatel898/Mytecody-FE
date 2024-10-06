@@ -8,11 +8,11 @@ function App() {
     <>
       <GoogleOAuthProvider clientId='579522450676-m45rt335esul36btglc5g8t72141afgi.apps.googleusercontent.com'>
 
-    <BrowserRouter>
-      <AppRouting />
-    </BrowserRouter>
-    </GoogleOAuthProvider>
-  </>
+        <BrowserRouter>
+          <AppRouting />
+        </BrowserRouter>
+      </GoogleOAuthProvider>
+    </>
   );
 }
 

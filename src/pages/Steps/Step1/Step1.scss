@@ -7,73 +7,163 @@
 
   /* Full height to enable proper layout */
   .conversation-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+
+    @media screen and (max-width: 767px) {
+      padding: 0;
+    }
     .title-img {
       display: flex;
       flex-direction: row;
-    }
-  }
-
-  .conversation-button {
-    border-top: solid $color-gray-2 1px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    padding: 10px;
-    position: relative;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-
-    @media screen and (max-width: 1025px) {
-      justify-content: center;
-    }
-
-    @media screen and (max-width: 1025px) {}
-    .btn {
-      background: $color-white;
-      border: solid 1px $primary-color;
-      min-width: 208px;
-      display: flex;
       align-items: center;
-      gap: 8px;
-      justify-content: center;
-      padding: 15px 15px;
-      border-radius: 24px;
+      justify-content: space-between;
+      margin-bottom: 20px;
+
+      h1 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #192655;
+        margin-right: 10px;
+      }
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
 
       @media screen and (max-width: 767px) {
-        min-width: 150px;
-        gap: 10px;
-        font-size: 12px;
-
-      }
-
-      &.getStartedBtn {
-        // min-width: 350px;
-        color: $Light_White;
-
-        svg path {
-          fill: $Light_White;
+        h1 {
+          font-size: 20px;
         }
 
-
+        img {
+          width: 20px;
+          height: 20px;
+        }
       }
     }
-    .btn-primary {
-      background-color: #007bff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      color: white;
-      cursor: pointer;
 
-      &:hover {
-        background-color: #0056b3;
+    .message-content {
+      overflow-y: auto;
+      padding: 10px;
+      border-radius: 10px;
+      max-height: 60vh;
+
+      @media screen and (max-width: 767px) {
+        max-height: 40vh;
+      }
+
+      .wave-loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .dot {
+          width: 10px;
+          height: 10px;
+          background-color: #192655;
+          border-radius: 50%;
+          margin: 0 5px;
+          animation: bounce 1.2s infinite ease-in-out;
+        }
       }
     }
   }
+
+  // /* Button section */
+  // .conversation-button {
+  //   border-top: solid $color-gray-2 1px;
+  //   display: flex;
+  //   justify-content: flex-end;
+  //   gap: 10px;
+  //   padding: 20px 0;
+  //   position: sticky;
+  //   bottom: 0;
+  //   width: 100%;
+  //   background-color: white;
+
+  //   @media screen and (max-width: 1025px) {
+  //     justify-content: center;
+  //   }
+
+  //   .btn {
+  //     background: $color-white;
+  //     border: solid 1px $primary-color;
+  //     min-width: 208px;
+  //     display: flex;
+  //     align-items: center;
+  //     gap: 10px;
+  //     justify-content: center;
+  //     padding: 15px 15px;
+  //     border-radius: 10px;
+  //     margin-right:20px;
+  //     @media screen and (max-width: 767px) {
+  //       min-width: 150px;
+  //       gap: 10px;
+  //       font-size: 12px;
+  //     }
+
+  //     &.getStartedBtn {
+  //       color: $Light_White;
+
+  //       svg path {
+  //         fill: $Light_White;
+  //       }
+  //     }
+  //   }
+
+  //   .btn-primary {
+  //     background-color: #192655;
+  //     border: none;
+  //     padding: 15px 20px;
+      
+  //     color: white;
+  //     cursor: pointer;
+  //     font-size: 18px;
+  //     font-weight: bold;
+  //     margin-right:20px;
+  //     &:hover {
+  //       background-color: #0056b3;
+  //     }
+
+  //     @media screen and (max-width: 767px) {
+  //       font-size: 14px;
+  //       padding: 10px 15px;
+  //     }
+  //   }
+  // }
 
   .conversation-microphone {
     width: 100%;
+
+    @media screen and (max-width: 767px) {
+      font-size: 14px;
+      padding: 5px;
+      width: auto;
+    }
+  }
+
+  .spinner-ldr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+
+/* Keyframes for the wave-loading dots */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }

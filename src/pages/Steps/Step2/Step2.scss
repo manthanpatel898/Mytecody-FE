@@ -1,6 +1,72 @@
-.step2-container {
+@import "../../../styles/base/variables.scss";
+
+.vision-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full height to enable proper layout */
+  height: 100vh;
 
+  /* Full height to enable proper layout */
+  .vision-details-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+
+    @media screen and (max-width: 767px) {
+      padding: 0;
+    }
+
+    .title-img {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+
+      h1 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #192655;
+        margin-right: 10px;
+      }
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+
+      @media screen and (max-width: 767px) {
+        h1 {
+          font-size: 20px;
+        }
+
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    .message-content {
+      overflow-y: auto;
+      padding: 10px;
+      border-radius: 10px;
+      max-height: 60vh;
+
+      @media screen and (max-width: 767px) {
+        max-height: 40vh;
+      }
+    }
+  }
+
+  .spinner-ldr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  }
 }

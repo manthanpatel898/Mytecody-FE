@@ -1,3 +1,75 @@
+@import "../../styles/base/variables.scss";
+
+.steps-wrap{
+  // padding: 30px;
+  @media screen and (max-width: 767px) {
+    padding: 30px 10px;
+  }
+
+  .buttons {
+    border-top: solid $color-gray-2 1px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 20px 0;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+
+    @media screen and (max-width: 1025px) {
+      justify-content: center;
+    }
+
+    .btn {
+      background: $color-white;
+      border: solid 1px $primary-color;
+      min-width: 208px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+      padding: 15px 15px;
+      border-radius: 10px;
+      margin-right:20px;
+      @media screen and (max-width: 767px) {
+        min-width: 150px;
+        gap: 10px;
+        font-size: 12px;
+      }
+
+      &.getStartedBtn {
+        color: $Light_White;
+
+        svg path {
+          fill: $Light_White;
+        }
+      }
+    }
+
+    .btn-primary {
+      background-color: #192655;
+      border: none;
+      padding: 15px 20px;
+      
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      margin-right:20px;
+      &:hover {
+        background-color: #0056b3;
+      }
+
+      @media screen and (max-width: 767px) {
+        font-size: 14px;
+        padding: 10px 15px;
+      }
+    }
+  }
+
+}
+
 .stepper-container {
   display: flex;
   flex-direction: column;
@@ -41,3 +113,4 @@
   }
 
 }
+

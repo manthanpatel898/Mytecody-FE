@@ -1,0 +1,1 @@
+export const SUBSCRIPTION_PLAN_1 = "TIER-1"

@@ -16,7 +16,8 @@
       padding: 0;
   
       .nav-item {
-        a {
+        a,
+        .logout-btn {
           display: flex;
           align-items: center;
           text-decoration: none;
@@ -24,7 +25,10 @@
           padding: 15px 20px;
           font-size: 18px;
           transition: background 0.3s ease, color 0.3s ease;
-  
+          background: none;
+          border: none;
+          cursor: pointer;
+
           svg {
             margin-right: 15px;
             color: #ffffff; /* White for icons */
@@ -47,6 +51,16 @@
         }
       }
     }
+
+    .logout-section {
+      margin-top: auto;
+      .btn-width {
+        width: 100%;
+      }
+      .nav-item {
+        padding-bottom: 20px; /* Add padding to keep logout button slightly above the bottom */
+      }
+    }  
   
     &.open {
       transform: translateX(0); /* Fully visible state */

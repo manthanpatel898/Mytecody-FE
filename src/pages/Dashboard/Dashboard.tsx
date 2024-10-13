@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { FaTrash, FaRedo, FaDownload, FaPlus } from 'react-icons/fa';
 import './Dashboard.scss'; // Include your SCSS
-import { getProposalAPI } from '../../service/Proposal.service';
+import { deleteProposalAPI, getProposalAPI } from '../../service/Proposal.service';
 import spinner from "../../assets/spinner.svg"; // Import the spinner
 import { useNavigate } from 'react-router-dom';
 import { setItem } from '../../utils/localstorage-service';
+import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  
+
   // Proposals state (initially empty)
   const [proposals, setProposals] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false); // Loading state
@@ -16,7 +17,9 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(1); // Current page
   const recordsPerPage = 10; // Records per page (same as per_page in API)
   const [apiCalled, setApiCalled] = useState(false); // New flag to control multiple API calls
-
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for opening/closing delete modal
+  const [selectedProposal, setSelectedProposal] = useState<any | null>(null); // State to store selected proposal for deletion
+  const [isLoadingDelete, setLoadingDelete] = useState(false)
   // Function to fetch proposals from the API
   const getProposal = async (page: number) => {
     if (apiCalled) return; // Prevent the API from being called again if it is already running
@@ -66,6 +69,30 @@ const Dashboard = () => {
   const navigateStep = (proposal: any) => {
     setItem('proposal_id', proposal._id); // Store the proposal_id in localStorage
     navigate('/steps');
+  };
+
+  // Function to open the delete confirmation modal
+  const handleDeleteClick = (proposal: any) => {
+    setSelectedProposal(proposal); // Set the proposal to be deleted
+    setIsDeleteModalOpen(true); // Open the confirmation modal
+  };
+
+  const confirmDelete = async () => {
+    setLoadingDelete(true);
+    try {
+      const response = await deleteProposalAPI(selectedProposal._id); // Call the correct API for deleting a proposal
+      if (response.status === 'success') {
+        // After successful deletion, remove the deleted proposal from the local state
+        setProposals((prevProposals) =>
+          prevProposals.filter((proposal) => proposal._id !== selectedProposal._id)
+        );
+        setIsDeleteModalOpen(false); // Close the delete modal
+      }
+    } catch (error) {
+      console.error('Failed to delete proposal:', error); // Handle any errors during deletion
+    } finally {
+      setLoadingDelete(false); // Ensure the loading state is reset
+    }
   };
   
   return (
@@ -127,11 +154,11 @@ const Dashboard = () => {
                           <FaRedo /> Resume
                         </button>
                       ) : (
-                        <button className="btn email-btn">
+                        <button className="btn email-btn" onClick={() => { navigateStep(proposal) }}>
                           <FaDownload /> Download Proposal
                         </button>
                       )}
-                      <button className="btn delete-btn">
+                      <button className="btn delete-btn" onClick={() => handleDeleteClick(proposal)}>
                         <FaTrash /> Delete
                       </button>
                     </div>
@@ -151,6 +178,18 @@ const Dashboard = () => {
               </button>
             </div>
           </div>
+
+          {/* Confirmation Modal */}
+          {isDeleteModalOpen && (
+            <ConfirmationModal
+              title="Delete Proposal"
+              message={`Are you sure you want to delete the proposal "${selectedProposal?.title}"?`}
+              onConfirm={confirmDelete}
+              onCancel={() => setIsDeleteModalOpen(false)}
+              isLoading={isLoadingDelete}
+            />
+          )}
+
         </>
       )}
     </div>

@@ -3,11 +3,13 @@ import Title from '../../../components/Title/Title';
 import volume from "../../../assets/volume.svg";
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Message from '../../../components/message/Message';
-import { generateConversationAPI, getConversation, saveConversationAPI } from '../../../service/Proposal.service'; // Added saveProposalAPI
+import { generateConversationAPI, getConversation, saveConversationAPI } from '../../../service/Proposal.service'; // Added getWalletInfoAPI
 import spinner from '../../../assets/spinner.svg';
 import { MicrophoneIcon } from "../../../assets/microphone_icon";
 import SpeechToText from '../../../components/SpeechToText/SpeechToText';
+import WalletTokenWarning from '../../../components/WalletTokenWarning/WalletTokenWarning'; // Import WalletTokenWarning
 import { setItem } from '../../../utils/localstorage-service';
+import { getWalletInfoAPI } from '../../../service/Wallet.service';
 
 interface Message {
   senderType: string;
@@ -21,6 +23,7 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
   const [proposalId, setProposalId] = useState<string | null>(null);
   const [isSpeechModelActive, setIsSpeechModelActive] = useState(false);
   const [isBtnProcess, setIsBtnProcess] = useState(false);
+  const [isWalletWarningVisible, setIsWalletWarningVisible] = useState(false); // New state to show wallet warning
   const messageEndRef = useRef<HTMLDivElement>(null);
   const [isLoadingProcess, setisLoadingProcess] = useState(false);
   const [parentResults, setParentResults] = useState<string | null>(null); // Changed to string | null
@@ -103,11 +106,11 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
 
   const saveConversation = async () => {
     if (!proposalId) return;
-  
+
     setIsConversationSubmit(true);
     try {
       const response = await saveConversationAPI(proposalId);
-  
+
       if (response && response.status === 'success') {
         setStep2Data(response.data.data); // Store the data in step2Data
         setActiveStep('STEPS2'); // Automatically set Step 2 as active after saving
@@ -118,6 +121,7 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
       setIsConversationSubmit(false);
     }
   };
+  
   const updateResults = useCallback((newResults: string) => {
     setParentResults(newResults);
     scrollToBottom(); // Scroll after updating results
@@ -140,6 +144,9 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
     const proposalId = localStorage.getItem("proposal_id");
     setProposalId(proposalId);
 
+    // Fetch wallet info first
+    fetchWalletInfo();
+
     if (!proposalId) {
       setDefaultMessage();
       return;
@@ -147,6 +154,20 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
 
     fetchProjectConversation(proposalId);
   }, []);
+
+  const fetchWalletInfo = async () => {
+    try {
+      const response = await getWalletInfoAPI(); // Call the wallet info API
+      if (response?.status === 'success') {
+        const availableTokens = response.data.availableTokens;
+        if (availableTokens <= 0) {
+          setIsWalletWarningVisible(true); // Show wallet warning if tokens are insufficient
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching wallet info:', error);
+    }
+  };
 
   const fetchProjectConversation = async (proposalId: string) => {
     setIsLoading(true); // Start loading
@@ -239,46 +260,52 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
           <img src={spinner} alt="Loading..." />
         </div>
       ) : (
-        <div className="conversation-content">
-          <div className="title-img">
-            <Title title="Project Conversation" />
-            <img src={volume} alt="volume Icon" width={24} />
-          </div>
+        <>
+          {isWalletWarningVisible ? (
+            <WalletTokenWarning /> // Show wallet warning if tokens are insufficient
+          ) : (
+            <div className="conversation-content">
+              <div className="title-img">
+                <Title title="Project Conversation" />
+                <img src={volume} alt="volume Icon" width={24} />
+              </div>
 
-          <div className="message-content">
-            {messages.map((msg, index) => (
-              <Message
-                key={index}
-                senderType={msg.senderType}
-                setMessages={setMessages}
-                isEdits={msg.isEdit}
-                messageState={messages}
-                message={msg.message}
-              />
-            ))}
-            {isLoadingProcess && (
-              <div className="wave-loading">
-                <div className="dot"></div>
-                <div className="dot"></div>
-                <div className="dot"></div>
+              <div className="message-content">
+                {messages.map((msg, index) => (
+                  <Message
+                    key={index}
+                    senderType={msg.senderType}
+                    setMessages={setMessages}
+                    isEdits={msg.isEdit}
+                    messageState={messages}
+                    message={msg.message}
+                  />
+                ))}
+                {isLoadingProcess && (
+                  <div className="wave-loading">
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                  </div>
+                )}
+                {isSpeechModelActive && (
+                  <div className='conversation-microphone'>
+                    <SpeechToText
+                      updateResults={updateResults}
+                      setBtnProcess={setIsBtnProcess}
+                      isplay={isplay}
+                      setresetMessage={resetMessage}
+                      setIsplay={setIsplay}
+                      setIsRecording={setIsRecording}
+                      isLoadingProcess={isLoadingProcess}
+                    />
+                  </div>
+                )}
+                <div ref={messageEndRef}></div>
               </div>
-            )}
-            {isSpeechModelActive && (
-              <div className='conversation-microphone'>
-                <SpeechToText
-                  updateResults={updateResults}
-                  setBtnProcess={setIsBtnProcess}
-                  isplay={isplay}
-                  setresetMessage={resetMessage}
-                  setIsplay={setIsplay}
-                  setIsRecording={setIsRecording}
-                  isLoadingProcess={isLoadingProcess}
-                />
-              </div>
-            )}
-            <div ref={messageEndRef}></div>
-          </div>
-        </div>
+            </div>
+          )}
+        </>
       )}
 
       <div className="buttons">

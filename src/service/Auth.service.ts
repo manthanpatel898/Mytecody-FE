@@ -5,7 +5,6 @@ import { Login } from "../utils/api-list";
 export async function login(payload:any) {
   try {
     const response = await makeRequest('post', Login.USER_LOGIN,payload);
-    debugger
     if (response && response.status === "success") {
       return response;
     } else {
@@ -19,7 +18,6 @@ export async function login(payload:any) {
 export async function signup(payload:any) {
   try {
     const response = await makeRequest('post', Login.USER_SIGNUP,payload);
-    debugger
     if (response && response.status === "success") {
       return response;
     } else {

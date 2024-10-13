@@ -274,6 +274,97 @@
                   p {
                     margin: 0;
                   }
+
+                  .tasks-section {
+                    margin-top: 20px;
+                    background-color: #EFF2FD; // Light background for task section
+                    padding: 15px;
+                    border-radius: 10px;
+
+                    .tasks-title {
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      margin-bottom: 20px;
+                  
+                      h4 {
+                        font-size: 16px;
+                        font-weight: bold;
+                        margin-bottom: 12px;
+                        margin-top: 5px;
+                      }
+
+                      .add-task-icon {
+                        cursor: pointer;
+
+                        /* Make the add icon clickable */
+                        svg {
+                          width: 20px;
+                          height: 20px;
+                        }
+                      }
+                    }
+
+                    ul {
+                      list-style: none;
+                      padding: 0;
+
+                      .task-item {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        background-color: #fff;
+                        border: 1px solid #ddd;
+                        border-radius: 8px;
+                        padding: 10px 15px;
+                        margin-bottom: 10px;
+
+                        .task-details {
+                          flex: 1;
+
+                          p {
+                            margin: 0;
+                            font-size: 14px;
+                            color: #333;
+                          }
+
+                          .task-complexity {
+                            font-size: 12px;
+                            color: #777;
+                            margin-top: 5px;
+                            display: block;
+                          }
+                        }
+
+                        .task-actions {
+                          display: flex;
+                          gap: 10px;
+
+                          span {
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+
+                            svg {
+                              width: 16px;
+                              height: 16px;
+                              fill: #333;
+                            }
+
+                            &:hover svg {
+                              fill: #555;
+                            }
+                          }
+                        }
+                      }
+                    }
+
+                    p {
+                      color: #777;
+                      font-size: 14px;
+                    }
+                  }
+
                 }
               }
             }
@@ -289,15 +380,4 @@
     }
   }
 
-  .spinner-ldr {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-
-    img {
-      width: 50px;
-      height: 50px;
-    }
-  }
 }

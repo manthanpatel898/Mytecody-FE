@@ -2,15 +2,18 @@ import './Step3.scss'; // Include your SCSS
 import Title from '../../../components/Title/Title';
 import { useEffect, useRef, useState } from 'react';
 import spinner from '../../../assets/spinner.svg';
-import { getBusinessVerticalAPI, saveBusinessVerticalAPI } from '../../../service/Proposal.service'; // Import saveBusinessVerticalAPI
+import { getBusinessVerticalAPI, saveBusinessVerticalAPI } from '../../../service/Proposal.service'; // Import saveBusinessVerticalAPI and getWalletInfoAPI
+import WalletTokenWarning from '../../../components/WalletTokenWarning/WalletTokenWarning'; // Import the WalletTokenWarning pop-up
+import { getWalletInfoAPI } from '../../../service/Wallet.service';
 
 const Step3 = ({ isActive, setActiveStep, step3Data, setStep4Data }: any) => {
   const [isLoading, setIsLoading] = useState(true); // Loader until content loads
   const [proposalId, setProposalId] = useState<string | null>(null);
   const [isSubmitBusinessVertical, setIsSubmitBusinessVertical] = useState(false); // For disabling button and showing loader
-  const messageEndRef = useRef<HTMLDivElement>(null);
   const [businessData, setBusinessData] = useState<any>([]); // Data for business vertical
   const [editBtn, setEditBtn] = useState(false); // Control edit functionality
+  const [isWalletWarningVisible, setIsWalletWarningVisible] = useState(false); // Show pop-up for insufficient tokens
+  const messageEndRef = useRef<HTMLDivElement>(null);
 
   // Scroll to the bottom of the message container
   const scrollToBottom = () => {
@@ -65,14 +68,31 @@ const Step3 = ({ isActive, setActiveStep, step3Data, setStep4Data }: any) => {
     }
   };
 
-  // Fetch project details and set step3Data into businessData when component becomes active
+  // Fetch wallet info and project details when component becomes active
   useEffect(() => {
     const storedProposalId = localStorage.getItem("proposal_id"); // Ensure proposal_id is fetched from localStorage
     setProposalId(storedProposalId);
 
-    if (isActive && storedProposalId) {
+    const fetchWalletInfo = async () => {
+      try {
+        const response = await getWalletInfoAPI();
+        if (response?.status === 'success') {
+          const availableTokens = response.data.availableTokens;
+          if (availableTokens <= 0) {
+            setIsWalletWarningVisible(true); // Show wallet warning if tokens are insufficient
+            return; // Do not proceed further if tokens are insufficient
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching wallet info:', error);
+      }
+    };
+
+    fetchWalletInfo(); // Fetch wallet info before loading the component
+
+    if (!isWalletWarningVisible && isActive && storedProposalId) {
       if (step3Data) {
-        // If data is passed from Step 2, use it
+        // If step3Data is provided, use it
         setBusinessData(step3Data);
         setIsLoading(false); // Content has loaded, so stop showing loader
       } else {
@@ -80,14 +100,16 @@ const Step3 = ({ isActive, setActiveStep, step3Data, setStep4Data }: any) => {
         fetchBusinessVertical(storedProposalId);
       }
     }
-  }, [isActive, step3Data]); // Run when the component becomes active
+  }, [isActive, step3Data, isWalletWarningVisible]); // Run when the component becomes active
 
   return (
     <div className="business-container">
-      {isLoading ? ( // Show loader while content is loading
+      {isLoading ? (
         <div className="spinner-ldr">
           <img src={spinner} alt="Loading..." />
         </div>
+      ) : isWalletWarningVisible ? (
+        <WalletTokenWarning /> // Show Wallet Token Warning pop-up if tokens are insufficient
       ) : (
         <div className="business-details-content">
           <div className="title-img">

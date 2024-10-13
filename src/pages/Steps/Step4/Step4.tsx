@@ -2,26 +2,29 @@ import './Step4.scss'; // Include your SCSS
 import Title from '../../../components/Title/Title';
 import { useEffect, useRef, useState } from 'react';
 import spinner from '../../../assets/spinner.svg';
-import { getStackholderAPI, saveStackholderAPI } from '../../../service/Proposal.service'; // Import saveStackholderAPI
+import { getStackholderAPI, saveStackholderAPI } from '../../../service/Proposal.service'; // Import saveStackholderAPI and getWalletInfoAPI
 import { AddnewIcon } from '../../../assets/addnew_icon';
 import { CheckMarkBlueIcon } from '../../../assets/checkMarkBlue_icon';
 import { EditIcon } from '../../../assets/edit_icon';
 import { DeleteIcon } from '../../../assets/delete_icon';
+import WalletTokenWarning from '../../../components/WalletTokenWarning/WalletTokenWarning'; // Import WalletTokenWarning
+import { getWalletInfoAPI } from '../../../service/Wallet.service';
 
 const Step4 = ({ isActive, setActiveStep, step4Data }: any) => {
   const [isLoading, setIsLoading] = useState(true); // Loader until content loads
   const [proposalId, setProposalId] = useState<string | null>(null);
   const [isSubmitStackholderData, setIsSubmitStackholderData] = useState(false); // For disabling button and showing loader
-  const messageEndRef = useRef<HTMLDivElement>(null);
   const [stackHolderData, setStackHolderData] = useState<any>([]);
   const [editBtn, setEditBtn] = useState(false); // Control edit functionality
   const [isEdit, setIsEdit] = useState(false);
   const [editIndex, setEditIndex] = useState(-1);
+  const [isWalletWarningVisible, setIsWalletWarningVisible] = useState(false); // Show pop-up for insufficient tokens
 
   // Scroll to the bottom of the message container
   const scrollToBottom = () => {
-    if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    const messageEndRef = document.getElementById('messageEndRef');
+    if (messageEndRef) {
+      messageEndRef.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -44,15 +47,10 @@ const Step4 = ({ isActive, setActiveStep, step4Data }: any) => {
         setActiveStep('STEPS5'); // Move to Step 5 after success
       }
     } catch (error) {
-      console.error("Error while saving stackholder data:", error);
+      console.error('Error while saving stackholder data:', error);
     } finally {
       setIsSubmitStackholderData(false); // Enable button and hide loader after API response
     }
-  };
-
-  // Let Me Modify Button Click Function
-  const correctbtnClick = () => {
-    setEditBtn(true); // Enable the input field for editing
   };
 
   // Fetch stackholder data if step4Data is not available
@@ -64,38 +62,57 @@ const Step4 = ({ isActive, setActiveStep, step4Data }: any) => {
         setStackHolderData(response.data.stake_holders); // Set fetched stackholder data
       }
     } catch (error) {
-      console.error("Error fetching stackholder data:", error);
+      console.error('Error fetching stackholder data:', error);
     } finally {
       setIsLoading(false); // Stop loader after data is loaded
     }
   };
+
   const addnewData = () => {
-    setStackHolderData([...stackHolderData, []]);
+    setStackHolderData([...stackHolderData, '']);
   };
+
+  // Fetch wallet info and check if tokens are available
+  const fetchWalletInfo = async () => {
+    try {
+      const response = await getWalletInfoAPI();
+      if (response?.status === 'success') {
+        const availableTokens = response.data.availableTokens;
+        if (availableTokens <= 0) {
+          setIsWalletWarningVisible(true); // Show wallet warning if tokens are insufficient
+          return; // Do not proceed further if tokens are insufficient
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching wallet info:', error);
+    }
+  };
+
   // Fetch project details and set step4Data into stackholderData when component becomes active
   useEffect(() => {
-    const storedProposalId = localStorage.getItem("proposal_id"); // Ensure proposal_id is fetched from localStorage
+    const storedProposalId = localStorage.getItem('proposal_id'); // Ensure proposal_id is fetched from localStorage
     setProposalId(storedProposalId);
 
-    if (isActive && storedProposalId) {
+    fetchWalletInfo(); // Check wallet info before proceeding
+
+    if (!isWalletWarningVisible && isActive && storedProposalId) {
       if (step4Data) {
-        console.log('step4Data',step4Data)
-        // If data is passed from Step 3, use it
         setStackHolderData(step4Data);
         setIsLoading(false); // Content has loaded, so stop showing loader
       } else {
-        // If no step4Data, fetch stackholder data using the proposalId
         fetchStackholderData(storedProposalId);
       }
     }
-  }, [isActive, step4Data]); // Run when the component becomes active
+  }, [isActive, step4Data, isWalletWarningVisible]); // Run when the component becomes active
 
   return (
     <div className="stackholder-container">
-      {isLoading ? ( // Show loader while content is loading
+      {isLoading ? (
         <div className="spinner-ldr">
           <img src={spinner} alt="Loading..." />
         </div>
+      ) : isWalletWarningVisible ? (
+        <WalletTokenWarning /> // Show Wallet Token Warning pop-up if tokens are insufficient
       ) : (
         <div className="stackholder-details-content">
           <div className="title-img">
@@ -103,87 +120,70 @@ const Step4 = ({ isActive, setActiveStep, step4Data }: any) => {
           </div>
 
           <div className="content-inner-wrap">
-                    <p>
-                      These are the potential users that have a unique set of
-                      tools on your platform. Feel free to remove users, or add
-                      users you think have completely unique set of tools.
-                    </p>
-                    <div className="business-users-title">
-                      <h3>Business Users</h3>
-                      {isEdit && (
-                        <div
-                          style={{ cursor: "pointer" }}
-                          onClick={() => addnewData()}
-                        >
-                          <AddnewIcon /> <h3>Add new</h3>
-                        </div>
-                      )}
-                    </div>
-                    <div className="business-users-wrap">
-                      {stackHolderData.map((item: any, index: number) => (
-                        <div className="business-users" key={index}>
-                          <span className="user-check">
-                            <CheckMarkBlueIcon />
-                          </span>
-                          <input
-                            onChange={(e) =>
-                              setStackHolderData([
-                                ...stackHolderData.slice(0, index),
-                                e.target.value,
-                                ...stackHolderData.slice(index + 1),
-                              ])
-                            }
-                            className={
-                              editIndex === index
-                                ? "form-control"
-                                : "form-control disabled"
-                            }
-                            type="text"
-                            value={item}
-                          />
-                          {isEdit && (
-                            <div className="edit-delete-wrap">
-                              <span onClick={() => setEditIndex(index)}>
-                                <EditIcon />
-                              </span>
-                              <span
-                                onClick={() => {
-                                  const data = [...stackHolderData];
-                                  data.splice(index, 1);
-                                  setStackHolderData(data);
-                                }}
-                              >
-                                <DeleteIcon />
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-          <div className="buttons">
-            <button
-              onClick={correctbtnClick}
-              className="btn btn-primary getStartedBtn"
-            >
-              Let Me Modify
-            </button>
-
-            <button
-              onClick={saveStackholderData}
-              className={isSubmitStackholderData ? "btn" : "btn btn-primary"} // Disable button during API call
-              disabled={isSubmitStackholderData} // Disable button when loading
-            >
-              {isSubmitStackholderData ? (
-                <img src={spinner} alt="spinner Icon" width={24} />
-              ) : (
-                "Submit"
+            <p>
+              These are the potential users that have a unique set of tools on your platform. Feel free to remove users, or add users you think have completely unique set of tools.
+            </p>
+            <div className="business-users-title">
+              <h3>Business Users</h3>
+              {isEdit && (
+                <div style={{ cursor: 'pointer' }} onClick={addnewData}>
+                  <AddnewIcon /> <h3>Add new</h3>
+                </div>
               )}
-            </button>
+            </div>
+            <div className="business-users-wrap">
+              {stackHolderData.map((item: any, index: number) => (
+                <div className="business-users" key={index}>
+                  <span className="user-check">
+                    <CheckMarkBlueIcon />
+                  </span>
+                  <input
+                    onChange={(e) =>
+                      setStackHolderData([
+                        ...stackHolderData.slice(0, index),
+                        e.target.value,
+                        ...stackHolderData.slice(index + 1),
+                      ])
+                    }
+                    className={editIndex === index ? 'form-control' : 'form-control disabled'}
+                    type="text"
+                    value={item}
+                  />
+                  {isEdit && (
+                    <div className="edit-delete-wrap">
+                      <span onClick={() => setEditIndex(index)}>
+                        <EditIcon />
+                      </span>
+                      <span
+                        onClick={() => {
+                          const data = [...stackHolderData];
+                          data.splice(index, 1);
+                          setStackHolderData(data);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
+
+
         </div>
       )}
+
+      <div className="buttons">
+        <button onClick={() => setEditBtn(true)} className="btn btn-primary getStartedBtn">
+          Let Me Modify
+        </button>
+
+        <button onClick={saveStackholderData} className={isSubmitStackholderData ? 'btn' : 'btn btn-primary'} disabled={isSubmitStackholderData}>
+          {isSubmitStackholderData ? <img src={spinner} alt="spinner Icon" width={24} /> : 'Submit'}
+        </button>
+      </div>
+      <div id="messageEndRef"></div>
     </div>
   );
 };

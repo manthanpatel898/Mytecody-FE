@@ -3,7 +3,7 @@ import Title from '../../../components/Title/Title';
 import { useEffect, useRef, useState } from 'react';
 import spinner from '../../../assets/spinner.svg';
 import { LoaderIcon } from '../../../assets/loader_icon';
-import { generateEpicsAPI, getAllEpicsApi, getStackholderAPI, getEpicsFromStackholderAPI, deleteEpicAPI, generateStoriesAPI } from '../../../service/Proposal.service'; // Import the APIs
+import { generateEpicsAPI, getAllEpicsApi, getStackholderAPI, getEpicsFromStackholderAPI, deleteEpicAPI, generateStoriesAPI, generateTasksAPI } from '../../../service/Proposal.service'; // Import the APIs
 import { EditIcon } from '../../../assets/edit_icon';
 import { DeleteIcon } from '../../../assets/delete_icon';
 import { AddnewIcon } from '../../../assets/addnew_icon';
@@ -13,6 +13,10 @@ import ConfirmationModal from '../../../components/ConfirmationModal/Confirmatio
 import LoadingModal from '../../../components/LoadingModal/LoadingModal';
 import AddStoryModal from './AddStoryModal/AddStoryModal';
 import EditStoryModal from './EditStoryModal/EditStoryModal';
+import AddTaskModal from './AddTaskModal/AddTaskModal';
+import UpdateTaskModal from './UpdateTaskModal/UpdateTaskModal';
+import { getWalletInfoAPI } from '../../../service/Wallet.service';
+import WalletTokenWarning from '../../../components/WalletTokenWarning/WalletTokenWarning';
 interface Epic {
   id: string;
   title: string;
@@ -25,6 +29,14 @@ interface Story {
   id: string;
   title: string;
   description: string;
+  acceptance_criteria: string[];
+  tasks?: Task[]; // Add this optional tasks array
+}
+
+interface Task {
+  id: string;
+  description: string;
+  complexity: string;
 }
 
 const Step5 = ({ isActive, setActiveStep }: any) => {
@@ -42,9 +54,14 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
   const [showModal, setShowModal] = useState(false);
   const [expandedStoryIndex, setExpandedStoryIndex] = useState<number | null>(null);
   const [isGeneratingStories, setIsGeneratingStories] = useState(false); // New state for modal
+  const [isGeneratingTasks, setIsGeneratingTasks] = useState(false); // New state for modal
   const [isAddStoryModalOpen, setIsAddStoryModalOpen] = useState(false);
   const [isEditStoryModalOpen, setIsEditStoryModalOpen] = useState(false); // For managing the story modal
   const [selectedStory, setSelectedStory] = useState<any | null>(null); // For storing the selected story details
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
+  const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false); // For managing the story modal
+  const [selectedTask, setSelectedTask] = useState(false); // For managing the story modal
+  const [isWalletWarningVisible, setIsWalletWarningVisible] = useState(false); // Show pop-up for insufficient tokens
   // Ensure proposalId is a string, fallback to empty string if null
   const proposalIdString = proposalId ?? '';
 
@@ -125,6 +142,7 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
 
       if (response?.status === 'success') {
         console.log('Epics generated successfully');
+        refreshEpics();
       } else {
         console.log('Failed to generate epics.');
       }
@@ -220,6 +238,22 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
     }
   };
 
+  // Generate Tasks
+  const generateTasks = async () => {
+    setIsGeneratingTasks(true); // Show the modal
+    try {
+      const response = await generateTasksAPI(proposalId); // Call the generateTasks API
+      if (response?.status === 'success') {
+        // Close modal and refresh epics
+        refreshEpics();
+      }
+    } catch (error) {
+      console.error("Error generating tasks:", error);
+    } finally {
+      setIsGeneratingTasks(false); // Hide the modal
+    }
+  };
+
   const handleAddStory = (epic: any) => {
     setSelectedEpic(epic);
     setIsAddStoryModalOpen(true);
@@ -230,22 +264,61 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
     setSelectedStory(story); // Set the selected story to be edited
     setIsEditStoryModalOpen(true); // Open the edit story modal
   };
+  // Function to handle adding a task
+  const handleAddTask = (epic: any, story: any) => {
+    setSelectedEpic(epic);
+    setSelectedStory(story); // Set the selected story to be edited
+    setIsAddTaskModalOpen(true);
+  };
+
+  // Close modal
+  const closeAddTaskModal = () => {
+    setIsAddTaskModalOpen(false);
+  };
+
 
   const handleDeleteStory = (storie: any) => {
 
   }
 
+  const handleEditTask = (task: any, story: any, epic: any) => {
+    setSelectedTask(task); // Set the selected task for editing
+    setSelectedStory(story); // Set the story associated with the task
+    setSelectedEpic(epic); // Set the epic associated with the task
+    setIsEditTaskModalOpen(true); // Open the edit task modal
+  };
+
+
+  const handleDeleteTask = (task: any) => {
+
+  }
+
+  // Fetch wallet info and check if tokens are available
+  const fetchWalletInfo = async () => {
+    try {
+      const response = await getWalletInfoAPI();
+      if (response?.status === 'success') {
+        const availableTokens = response.data.availableTokens;
+        if (availableTokens <= 0) {
+          setIsWalletWarningVisible(true); // Show wallet warning if tokens are insufficient
+          return; // Do not proceed further if tokens are insufficient
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching wallet info:', error);
+    }
+  };
 
 
   // Fetch project details and set epicsData when the component becomes active
   useEffect(() => {
-    const storedProposalId = localStorage.getItem("proposal_id"); // Ensure proposal_id is fetched from localStorage
+    const storedProposalId = localStorage.getItem("proposal_id");
     setProposalId(storedProposalId);
-
-    if (storedProposalId) {
+    fetchWalletInfo(); // Fetch wallet info before any further actions
+    if (storedProposalId && !isWalletWarningVisible) {
       getAllEpics(storedProposalId); // Fetch epics when proposalId is available
     }
-  }, [isActive]); // Run when the component becomes active
+  }, [isActive, isWalletWarningVisible]); // Run when the component becomes active
 
   return (
     <div className="epics-container">
@@ -253,7 +326,10 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
         <div className="spinner-ldr">
           <img src={spinner} alt="Loading..." />
         </div>
+      ) : isWalletWarningVisible ? (
+        <WalletTokenWarning /> // Show Wallet Token Warning pop-up if tokens are insufficient
       ) : (
+
         <div className="epics-details-content">
           <div className="title-img">
             <Title title="Epics of the Project" />
@@ -314,7 +390,7 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
                         <p>{epic.description}</p>
                         <div className="stories-section">
                           <div className="stories-title">
-                            <h4>Stories of the Epics</h4>
+                            <h4>List of Stories</h4>
                             <div className="add-story-icon" onClick={() => handleAddStory(epic)}>
                               <AddnewIcon /> {/* Assuming AddnewIcon is an SVG or image */}
                             </div>
@@ -338,6 +414,36 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
                                 <div className="accordion-content">
                                   <p>{story.description}</p>
                                   <p>Acceptance Criteria: {story.acceptance_criteria.join(', ')}</p>
+                                  {/* Task section */}
+                                  {story.tasks?.length > 0 && (
+                                    <div className="tasks-section">
+                                      <div className="tasks-title">
+                                        <h4>List of Tasks</h4>
+                                        <div className="add-task-icon" onClick={() => handleAddTask(epic, story)}>
+                                          <AddnewIcon /> {/* Assuming AddnewIcon is an SVG or image */}
+                                        </div>
+                                      </div>
+                                      <ul>
+                                        {story.tasks.map((task: any) => (
+                                          <li key={task.id} className="task-item">
+                                            <div className="task-details">
+                                              <p>{task.description}</p>
+                                              <span className="task-complexity">Complexity: {task.complexity}</span>
+                                            </div>
+                                            <div className="task-actions">
+                                              <span onClick={() => handleEditTask(task, story, epic)}>
+                                                <EditIcon />
+                                              </span>
+                                              <span onClick={() => handleDeleteTask(task)}>
+                                                <DeleteIcon />
+                                              </span>
+                                            </div>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  )}
+
                                 </div>
                               )}
                             </div>
@@ -353,8 +459,6 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
             </div>
           </div>
 
-
-
           <div className="buttons">
             {/* Conditionally render the "Generate Stories" button */}
             {epicsData.length > 0 && (!epicsData[0].user_stories || epicsData[0].user_stories.length === 0) && (
@@ -362,6 +466,19 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
                 Generate Stories
               </button>
             )}
+
+            {epicsData.length > 0 &&
+              epicsData[0] &&
+              epicsData[0].user_stories &&
+              epicsData[0].user_stories.length > 0 &&
+              epicsData[0].user_stories[0] &&
+              (!epicsData[0].user_stories[0]?.tasks ||
+                epicsData[0].user_stories[0]?.tasks.length === 0) && (
+                <button className="btn btn-primary" onClick={generateTasks}>
+                  Generate Tasks
+                </button>
+              )
+            }
 
             <button className="btn btn-primary">
               Submit
@@ -403,6 +520,11 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
       {isGeneratingStories && (
         <LoadingModal message="Stories are generating, please keep some patience..." />
       )}
+
+      {isGeneratingTasks && (
+        <LoadingModal message="Tasks are generating, please keep some patience..." />
+      )}
+
       {isAddStoryModalOpen && selectedEpic && (
         <AddStoryModal
           closeModal={() => setIsAddStoryModalOpen(false)}
@@ -424,7 +546,28 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
         />
       )}
 
+      {isAddTaskModalOpen && selectedEpic && selectedStory && (
+        <AddTaskModal
+          closeModal={closeAddTaskModal}
+          proposalId={proposalId} // Pass dynamic proposal ID
+          stakeholder={stackholderData[stackholderIndex]} // Pass dynamic stakeholder
+          epicId={selectedEpic?.id} // Pass epic ID
+          storyId={selectedStory?.id} // Pass story ID
+          refreshEpics={refreshEpics} // Function to refresh the epic list
+        />
+      )}
 
+      {isEditTaskModalOpen && selectedEpic && selectedStory && selectedTask && (
+        <UpdateTaskModal
+          closeModal={() => setIsEditTaskModalOpen(false)}
+          proposalId={proposalId}
+          stakeholder={stackholderData[stackholderIndex]} // Dynamic stakeholder
+          epicId={selectedEpic.id}
+          storyId={selectedStory.id}
+          task={selectedTask}
+          refreshEpics={refreshEpics}
+        />
+      )}
 
     </div >
   );

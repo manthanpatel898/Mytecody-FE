@@ -1,0 +1,97 @@
+.individual-profile-form {
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh; /* Limit form height to viewport */
+    overflow: hidden; /* Hide overflow outside the form */
+
+    @media screen and (max-width: 768px) {
+        padding: 15px; /* Adjust padding for smaller screens */
+    }
+
+    @media screen and (max-width: 480px) {
+        padding: 10px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Ensure form takes up full height */
+        overflow-y: auto; /* Enable vertical scrolling */
+    }
+}
+  
+h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+  
+.profile-image-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    .profileImage {
+        position: relative;
+        cursor: pointer;
+
+        img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .image-edit-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            border-radius: 50%;
+            padding: 5px;
+            font-size: 18px;
+            color: #007bff;
+        }
+    }
+}
+  
+.profile-form-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    flex-grow: 1; /* Allow this section to grow */
+
+    @media screen and (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+  
+.buttons {
+    text-align: center;
+    margin-top: 30px;
+    padding-bottom: 20px; /* Add padding for spacing */
+    flex-shrink: 0; /* Prevent shrinking */
+    position: sticky;
+    bottom: 0;
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        float: right;
+    }
+    .custom-btn{
+        width: auto;
+        @media screen and (max-width: 768px) {
+            width: 100%;
+        }
+    }
+}
+
+/* Ensure that the form scrolls properly */
+.individual-profile-form form {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Enable scrolling */
+}

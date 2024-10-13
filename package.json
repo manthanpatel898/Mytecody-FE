@@ -3,20 +3,27 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.669.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@react-oauth/google": "^0.12.1",
+    "@stripe/stripe-js": "^4.8.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.108",
     "@types/react": "^18.3.6",
+    "@types/react-bootstrap": "^0.32.37",
     "@types/react-dom": "^18.3.0",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.7",
+    "bootstrap": "^5.3.3",
+    "browser-image-compression": "^2.0.2",
     "crypto-js": "^4.2.0",
     "react": "^18.3.1",
+    "react-bootstrap": "^2.10.5",
+    "react-bootstrap-modal": "^4.2.0",
     "react-dom": "^18.3.1",
     "react-hook-speech-to-text": "^0.8.0",
     "react-icons": "^5.3.0",
@@ -52,8 +59,10 @@
     ]
   },
   "devDependencies": {
+    "@stripe/react-stripe-js": "^2.8.1",
     "@types/crypto-js": "^4.2.2",
     "@types/react-mic": "^12.4.6",
+    "@types/stripe": "^8.0.416",
     "sass": "^1.79.3",
     "sass-loader": "^12.6.0"
   }

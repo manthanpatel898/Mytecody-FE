@@ -11,6 +11,10 @@ import Register from "../pages/RegisterPage/RegisterPage";
 import Layout from "../layout/layout";
 import LayoutPage from "./layout/LayoutPage";
 import Steps from "../pages/Steps/Steps";
+import Wallet from "../pages/wallet/wallet";
+import IndividualProfile from "../pages/IndividualProfile/IndividualProfile";
+import Setting from "../pages/Setting/Setting";
+import Subscription from "../pages/Subscription/Subscription";
 
 
 const AppRouting = () => {
@@ -22,6 +26,10 @@ const AppRouting = () => {
         <Route element={<LayoutPage />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/steps" element={<Steps />} />
+          <Route path="/wallet" element={<Wallet />} />
+          <Route path="/individual-profile" element={<IndividualProfile />} />
+          <Route path="/setting" element={<Setting />} />
+          <Route path="/subscription" element={<Subscription />} />
         </Route>
       </Route>
       {/* Private route end */}

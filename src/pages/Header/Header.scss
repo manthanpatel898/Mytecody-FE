@@ -1,76 +1,83 @@
 .app-header {
-    background-color: #fff;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between; /* Ensures space between the logo and profile sections */
+  align-items: center;
+  padding: 0 20px;
+  height: 60px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: -webkit-fill-available;
+  position: fixed;
+  border-bottom: 2px solid #ccc;
+    z-index: 100;
+
+  .logo-container {
     display: flex;
-    justify-content: space-between; /* Ensures space between the logo and profile sections */
     align-items: center;
-    padding: 0 20px;
-    height: 60px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: -webkit-fill-available;
-    position: fixed;
-  
-    /* Logo on the left */
-    .logo-container {
-      display: flex;
-      align-items: center;
-  
-      .logo-icon {
-        font-size: 30px;
-        color: #1f2833; /* Replace with your logo color */
-        margin-right: 10px;
-      }
-  
-      .logo-text {
-        font-size: 20px;
-        color: #1f2833; /* Replace with your desired color */
-        margin: 0;
-      }
+
+    .logo-icon {
+      font-size: 30px;
+      color: #1f2833;
+      margin-right: 10px;
     }
-  
-    /* Icons and profile information on the right */
-    .header-right {
+
+    .logo-text {
+      font-size: 20px;
+      color: #1f2833;
+      margin: 0;
+    }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      font-size: 24px;
+      color: #1f2833;
+      cursor: pointer;
+    }
+
+    .settings-icon {
+      margin-right: 20px;
+    }
+
+    .profile-info {
       display: flex;
       align-items: center;
-  
-      .icon {
-        font-size: 24px;
+
+      span {
+        font-size: 16px;
+        margin-right: 10px;
         color: #1f2833;
+      }
+
+      .profile-image {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
         cursor: pointer;
       }
-  
-      .settings-icon {
-        margin-right: 20px; /* Space between settings and profile */
+
+      .profile-icon {
+        font-size: 36px;
+        cursor: pointer;
       }
-  
+    }
+  }
+}
+
+/* Adjustments for small screens */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 10px;
+
+    .header-right {
       .profile-info {
-        display: flex;
-        align-items: center;
-  
         span {
-          font-size: 16px;
-          margin-right: 10px;
-          color: #1f2833;
-        }
-  
-        .profile-icon {
-          font-size: 36px; /* Larger profile icon */
+          display: none; /* Hide text on smaller screens */
         }
       }
     }
   }
-  
-  /* Adjustments for small screens */
-  @media (max-width: 768px) {
-    .app-header {
-      padding: 0 10px;
-  
-      .header-right {
-        .profile-info {
-          span {
-            display: none; /* Hide text on smaller screens */
-          }
-        }
-      }
-    }
-  }
-  
+}

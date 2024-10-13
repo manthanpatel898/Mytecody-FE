@@ -56,6 +56,7 @@ const LoginPage: React.FC = () => {
       // Assuming success status means success
       if (response && response.status === 'success') {
         setItem('token', response.data.access_token); // Store token in localStorage
+        setItem('userInfo',JSON.stringify(response.data.user))
         toast.success(response.message);
         navigate('/dashboard'); // Navigate to dashboard or another page
       } else {

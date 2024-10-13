@@ -1,6 +1,260 @@
-.step2-container {
+@import "../../../styles/base/variables.scss";
+
+.final-proposal-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full height to enable proper layout */
+  height: 100vh;
 
+  .final-proposal-details-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+
+    @media screen and (max-width: 1024px) {
+      padding: 16px; // For tablet and mobile
+    }
+
+    @media screen and (max-width: 767px) {
+      padding: 8px; // For mobile
+    }
+
+    .title-img {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+
+      h1 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #192655;
+        margin-right: 10px;
+
+        @media screen and (max-width: 1024px) {
+          font-size: 22px;
+        }
+
+        @media screen and (max-width: 767px) {
+          font-size: 20px;
+        }
+      }
+
+      img {
+        width: 24px;
+        height: 24px;
+
+        @media screen and (max-width: 1024px) {
+          width: 22px;
+          height: 22px;
+        }
+
+        @media screen and (max-width: 767px) {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    .proposal-content {
+      .content {
+        .content-inner-wrap {
+          background: $color-light-blue-2;
+          padding: 24px;
+          border-radius: 24px;
+
+          @media screen and (max-width: 1024px) {
+            padding: 20px;
+            border-radius: 20px;
+          }
+
+          @media screen and (max-width: 767px) {
+            padding: 16px;
+            border-radius: 16px;
+          }
+
+          h3 {
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 145%;
+            color: $primary-color;
+
+            @media screen and (max-width: 1024px) {
+              font-size: 22px;
+            }
+
+            @media screen and (max-width: 767px) {
+              font-size: 20px;
+            }
+          }
+
+          .table-wrap {
+            display: flex;
+            gap: 40px;
+            margin-top: 16px;
+
+            @media screen and (max-width: 1024px) {
+              flex-direction: column;
+              gap: 16px;
+            }
+
+            @media screen and (max-width: 767px) {
+              gap: 12px;
+            }
+
+            .tab-col {
+              h5 {
+                font-weight: bold;
+                line-height: 20px;
+                margin-bottom: 4px;
+                font-size: 16px;
+
+                @media screen and (max-width: 1024px) {
+                  font-size: 15px;
+                }
+
+                @media screen and (max-width: 767px) {
+                  font-size: 14px;
+                }
+              }
+
+              span {
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: 400;
+
+                @media screen and (max-width: 1024px) {
+                  font-size: 13px;
+                }
+
+                @media screen and (max-width: 767px) {
+                  font-size: 12px;
+                }
+              }
+            }
+          }
+
+          .user-proposal-wrap {
+            background: $color-white;
+            border-radius: 16px;
+            padding: 16px 24px;
+            margin-top: 24px;
+
+            @media screen and (max-width: 1024px) {
+              padding: 12px 20px;
+              border-radius: 14px;
+            }
+
+            @media screen and (max-width: 767px) {
+              padding: 8px 16px;
+              border-radius: 12px;
+            }
+
+            h4 {
+              margin-bottom: 4px;
+
+              @media screen and (max-width: 1024px) {
+                font-size: 18px;
+              }
+
+              @media screen and (max-width: 767px) {
+                font-size: 16px;
+              }
+            }
+
+            .table-wrap {
+              display: flex;
+              gap: 40px;
+              margin-top: 16px;
+
+              @media screen and (max-width: 1024px) {
+                flex-direction: column;
+                gap: 16px;
+              }
+
+              @media screen and (max-width: 767px) {
+                gap: 12px;
+              }
+
+              .tab-col {
+                h5 {
+                  font-weight: bold;
+                  line-height: 20px;
+                  margin-bottom: 4px;
+                  font-size: 16px;
+
+                  @media screen and (max-width: 1024px) {
+                    font-size: 15px;
+                  }
+
+                  @media screen and (max-width: 767px) {
+                    font-size: 14px;
+                  }
+                }
+
+                span {
+                  font-size: 14px;
+                  line-height: 20px;
+                  font-weight: 400;
+
+                  @media screen and (max-width: 1024px) {
+                    font-size: 13px;
+                  }
+
+                  @media screen and (max-width: 767px) {
+                    font-size: 12px;
+                  }
+                }
+              }
+            }
+            .btn {
+              background: $color-white;
+              border: solid 1px $primary-color;
+              min-width: 208px;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              justify-content: center;
+              padding: 15px 15px;
+              border-radius: 10px;
+              margin-right:20px;
+              @media screen and (max-width: 767px) {
+                min-width: 150px;
+                gap: 10px;
+                font-size: 12px;
+              }
+        
+              &.getStartedBtn {
+                color: $Light_White;
+        
+                svg path {
+                  fill: $Light_White;
+                }
+              }
+            }
+        
+            .btn-primary {
+              background-color: #192655;
+              border: none;
+              padding: 15px 20px;
+              margin-top: 20px;
+              color: white;
+              cursor: pointer;
+              font-size: 18px;
+              font-weight: bold;
+              margin-right:20px;
+              &:hover {
+                background-color: #0056b3;
+              }
+        
+              @media screen and (max-width: 767px) {
+                font-size: 14px;
+                padding: 10px 15px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

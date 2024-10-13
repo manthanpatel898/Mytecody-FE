@@ -4,7 +4,6 @@ import { Proposal } from "../utils/api-list";
 export async function getProposalAPI(pageNumber: number) {
   try {
     const response = await makeRequest('get', Proposal.GET_PROPOSAL + pageNumber);
-    debugger
     if (response && response.status === "success") {
       return response;
     } else {
@@ -15,12 +14,9 @@ export async function getProposalAPI(pageNumber: number) {
   }
 }
 
-
-
 export async function getConversation(proposal_id: string) {
   try {
     const response = await makeRequest('get', Proposal.GET_CONVERSATION + proposal_id);
-    debugger
     if (response && response.status === "success") {
       return response;
     } else {
@@ -34,7 +30,6 @@ export async function getConversation(proposal_id: string) {
 export async function getProjectVision(proposal_id: string) {
   try {
     const response = await makeRequest('get', Proposal.GET_PROJECT_VISION + proposal_id);
-    debugger
     if (response && response.status === "success") {
       return response;
     } else {
@@ -48,7 +43,6 @@ export async function getProjectVision(proposal_id: string) {
 export async function generateConversationAPI(payload: any) {
   try {
     const response = await makeRequest('post', Proposal.GENERATE_CONVERSATION, payload);
-    debugger
     if (response && response.status === "success") {
       return response;
     } else {
@@ -177,9 +171,9 @@ export async function getEpicsFromStackholderAPI(proposal_id: any, stackholder: 
   }
 }
 
-export async function addEpicAPI(payload:any) {
+export async function addEpicAPI(payload: any) {
   try {
-    const response = await makeRequest('post', Proposal.ADD_EPICS , payload);
+    const response = await makeRequest('post', Proposal.ADD_EPICS, payload);
     if (response && response.status === "success") {
       return response;
     } else {
@@ -190,9 +184,9 @@ export async function addEpicAPI(payload:any) {
   }
 }
 
-export async function updateEpicAPI(payload:any) {
+export async function updateEpicAPI(payload: any) {
   try {
-    const response = await makeRequest('put', Proposal.UPDATE_EPICS , payload);
+    const response = await makeRequest('put', Proposal.UPDATE_EPICS, payload);
     if (response && response.status === "success") {
       return response;
     } else {
@@ -203,10 +197,10 @@ export async function updateEpicAPI(payload:any) {
   }
 }
 
-export async function deleteEpicAPI(payload:any) {
-  console.log('payload',payload)
+export async function deleteEpicAPI(payload: any) {
+  console.log('payload', payload)
   try {
-    const response = await makeRequest('delete', Proposal.DELETE_EPICS , payload);
+    const response = await makeRequest('delete', Proposal.DELETE_EPICS, payload);
     if (response && response.status === "success") {
       return response;
     } else {
@@ -230,10 +224,9 @@ export async function generateStoriesAPI(proposal_id: any) {
   }
 }
 
-
-export async function addStorieAPI(payload:any) {
+export async function generateTasksAPI(proposal_id: any) {
   try {
-    const response = await makeRequest('post', Proposal.ADD_STORIE , payload);
+    const response = await makeRequest('post', Proposal.GENERATE_TASKS + proposal_id);
     if (response && response.status === "success") {
       return response;
     } else {
@@ -244,9 +237,87 @@ export async function addStorieAPI(payload:any) {
   }
 }
 
-export async function updateStorieAPI(payload:any) {
+export async function addStorieAPI(payload: any) {
   try {
-    const response = await makeRequest('put', Proposal.UPDATE_STORIE , payload);
+    const response = await makeRequest('post', Proposal.ADD_STORIE, payload);
+    if (response && response.status === "success") {
+      return response;
+    } else {
+      throw response;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+export async function updateStorieAPI(payload: any) {
+  try {
+    const response = await makeRequest('put', Proposal.UPDATE_STORIE, payload);
+    if (response && response.status === "success") {
+      return response;
+    } else {
+      throw response;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+export async function addTaskAPI(payload: any) {
+  try {
+    const response = await makeRequest('post', Proposal.ADD_TASK, payload);
+    if (response && response.status === "success") {
+      return response;
+    } else {
+      throw response;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+export async function updateTaskAPI(payload: any) {
+  try {
+    const response = await makeRequest('put', Proposal.UPDATE_TASK, payload);
+    if (response && response.status === "success") {
+      return response;
+    } else {
+      throw response;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+export async function sendProposalAPI(proposal_id: any) {
+  try {
+    const response = await makeRequest('get', Proposal.SEND_PROPOSAL + proposal_id);
+    if (response && response.status === "success") {
+      return response;
+    } else {
+      throw response;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+export async function generateProposalAPI(proposal_id: any) {
+  try {
+    const response = await makeRequest('get', Proposal.GENERATE_PROPOSAL + proposal_id);
+    if (response && response.status === "success") {
+      return response;
+    } else {
+      throw response;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+export async function deleteProposalAPI(proposalId: string) {
+  try {
+    const response = await makeRequest('delete', Proposal.DELETE_PROPOSAL + proposalId);
     if (response && response.status === "success") {
       return response;
     } else {

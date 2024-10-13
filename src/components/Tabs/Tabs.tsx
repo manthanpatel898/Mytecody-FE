@@ -6,8 +6,8 @@ const tabSteps = [
   { step: "STEPS2", label: "VISION" },
   { step: "STEPS3", label: "BUSINESS VERTICAL" },
   { step: "STEPS4", label: "STACKHOLDER" },
-  { step: "STEPS5", label: "REVENUE MODEL" },
-  { step: "STEPS6", label: "EPICS" },
+  { step: "STEPS5", label: "EPICS" },
+  { step: "STEPS6", label: "PROPOSAL" },
 ];
 
 const Tabs = ({ activeStep, setActiveStep }: any) => {

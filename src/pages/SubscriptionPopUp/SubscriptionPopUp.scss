@@ -1,0 +1,135 @@
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .custom-modal {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    z-index: 1001;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  
+    .custom-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+  
+      h2 {
+        font-size: 24px;
+      }
+  
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+    }
+  
+    .custom-modal-body {
+      padding: 20px 0;
+  
+      .loader {
+        text-align: center;
+        img {
+          width: 40px;
+          height: 40px;
+        }
+      }
+  
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+  
+      .title {
+        font-size: 32px;
+        font-weight: 700;
+      }
+  
+      .manage-subscription-container {
+        margin-top: 20px;
+  
+        button {
+          margin-top: 10px;
+          padding: 12px 24px;
+          font-size: 16px;
+          background-color: #192655;
+          color: #ffffff;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: background 0.3s;
+  
+          &:hover {
+            background-color: #142047;
+          }
+        }
+      }
+    }
+  
+    .custom-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 10px;
+      border-top: 1px solid #eee;
+    }
+  
+    .btn-main {
+      padding: 12px 20px;
+      font-size: 16px;
+      background-color: #192655;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.3s;
+  
+      &:hover {
+        background-color: #142047;
+      }
+    }
+  
+    .btn-secondary {
+      background-color: #ddd;
+      color: #333;
+  
+      &:hover {
+        background-color: #ccc;
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .custom-modal {
+      max-width: 90%;
+    }
+  
+    .title {
+      font-size: 24px;
+    }
+  
+    .loader img {
+      width: 30px;
+      height: 30px;
+    }
+  
+    .manage-subscription-container button {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+  }

@@ -6,8 +6,8 @@ const S3_BUCKET = "myte-estimation-image";
 const s3Client = new S3Client({
   region: REGION,
   credentials: {
-    accessKeyId: "AKIAZLJWOLIOKJ6AWB73",
-    secretAccessKey: "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",
+    accessKeyId: "process.env.AWS_ACCESS_KEY",
+    secretAccessKey: "process.env.AWS_SECRATE_KEY a",
   },
 });
 

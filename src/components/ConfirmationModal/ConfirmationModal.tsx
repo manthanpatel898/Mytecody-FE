@@ -1,6 +1,7 @@
 import React from 'react';
 import './ConfirmationModal.scss'; // Add the relevant styles
 import Button from '../Button/Button';
+import spinner from '../../assets/spinner.svg'; // Assuming you have a spinner icon in your assets
 
 interface ConfirmationModalProps {
   title: string;
@@ -18,8 +19,8 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   isLoading,
 }) => {
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay-delete">
+      <div className="modal-content-delete">
         <h2>{title}</h2>
         <p>{message}</p>
 
@@ -34,7 +35,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             onClick={onConfirm}
           >
             {isLoading ? (
-              <img src="/path-to-your-spinner-icon.svg" alt="Loading..." width={24} />
+              <img src={spinner} alt="Loading..." width={24} />
             ) : (
               'Confirm'
             )}

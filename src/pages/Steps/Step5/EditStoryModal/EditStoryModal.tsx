@@ -76,8 +76,8 @@ const EditStoryModal= ({ closeModal, story, epicId, refreshEpics, proposalId, st
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay-edit-storie">
+      <div className="modal-content-edit-storie">
         <h2>Edit Story</h2>
         <form onSubmit={(e) => e.preventDefault()}>
           {/* Title Input */}

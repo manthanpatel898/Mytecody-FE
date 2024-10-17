@@ -19,6 +19,10 @@
       background: $color-light-blue-2;
       padding: 24px;
       border-radius: 24px;
+      @media screen and (max-width: 767px) {
+        overflow-y: auto;
+        max-height: 31vh;
+      }
       p {
           font-size: 16px;
           padding-bottom: 24px;
@@ -129,6 +133,10 @@
       @media screen and (max-width: 767px) {
         h1 {
           font-size: 20px;
+        }
+
+        h2{
+          margin: 10px;
         }
 
         img {

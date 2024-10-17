@@ -26,6 +26,12 @@ const AppRouting = () => {
         <Route element={<LayoutPage />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/steps" element={<Steps />} />
+          <Route path="/steps1" element={<Steps />} />
+          <Route path="/steps2" element={<Steps />} />
+          <Route path="/steps3" element={<Steps />} />
+          <Route path="/steps4" element={<Steps />} />
+          <Route path="/steps5" element={<Steps />} />
+          <Route path="/steps6" element={<Steps />} />
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/individual-profile" element={<IndividualProfile />} />
           <Route path="/setting" element={<Setting />} />

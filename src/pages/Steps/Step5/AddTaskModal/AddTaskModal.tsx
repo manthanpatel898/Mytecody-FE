@@ -57,8 +57,8 @@ const AddTaskModal = ({ closeModal, proposalId, stakeholder, epicId, storyId, re
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay-add-task">
+      <div className="modal-content-add-task">
         <h2>Add Task</h2>
         <form onSubmit={(e) => e.preventDefault()}>
           {/* Description Input */}

@@ -11,6 +11,7 @@ import { verifySubscriptionAPI } from '../../../service/subscription.service';
 import { SUBSCRIPTION_PLAN_1 } from '../../../utils/constants';
 import { toast } from 'react-toastify';
 import SubscriptionPopUp from '../../SubscriptionPopUp/SubscriptionPopUp';
+import { checkSubscriptionStatus } from '../../../utils/subscriptionUtils';
 
 interface Message {
   senderType: string;
@@ -27,38 +28,6 @@ const Step2 = ({ isActive, setActiveStep, step2Data, setStep3Data }: any) => {
   const messageEndRef = useRef<HTMLDivElement>(null);
   const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false); // Flag for showing the subscription pop-up
 
-  const checkSubscriptionStatus = async (stage: string) => {
-    try {
-      const res = await verifySubscriptionAPI();
-      const isSubscribed =
-        res?.data?.status === "active" || res?.data?.status === "trialing";
-      const productName = res?.data?.product_name;
-
-      // If user is not subscribed, show error and set the flag to show the pop-up
-      if (!isSubscribed) {
-        toast.error("Please subscribe to the product");
-        setShowSubscriptionPopup(true);
-        return false;
-      }
-
-      // Check for specific subscription plan requirements
-      if (stage === SUBSCRIPTION_PLAN_1 && productName !== SUBSCRIPTION_PLAN_1) {
-        toast.error("You are not subscribed to the required plan.");
-        setShowSubscriptionPopup(true);
-        return false;
-      }
-
-      // If subscription is valid
-      setShowSubscriptionPopup(false); // Ensure the pop-up is hidden if user has valid subscription
-      return true;
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to verify subscription status");
-      setShowSubscriptionPopup(true); // Show the pop-up in case of an API failure
-      return false;
-    }
-  };
-
   // Scroll to the bottom of the message container
   const scrollToBottom = () => {
     if (messageEndRef.current) {
@@ -72,13 +41,13 @@ const Step2 = ({ isActive, setActiveStep, step2Data, setStep3Data }: any) => {
     setIsSubmitVision(true); // Disable button and show loader
 
     // // Check subscription status
-    // const isSubscriptionValid = await checkSubscriptionStatus(SUBSCRIPTION_PLAN_1);
+    const isSubscriptionValid = await checkSubscriptionStatus(SUBSCRIPTION_PLAN_1,SUBSCRIPTION_PLAN_1,setShowSubscriptionPopup);
 
-    // if (!isSubscriptionValid) {
-    //   // If subscription is not valid, stop further execution and exit the function
-    //   setIsSubmitVision(false); // Enable button and hide loader
-    //   return;
-    // }
+    if (!isSubscriptionValid) {
+      // If subscription is not valid, stop further execution and exit the function
+      setIsSubmitVision(false); // Enable button and hide loader
+      return;
+    }
 
     // If subscription is valid, proceed with saving vision
     const payload = {
@@ -183,8 +152,10 @@ const Step2 = ({ isActive, setActiveStep, step2Data, setStep3Data }: any) => {
   return (
     <div className="vision-container">
       {isLoading ? (
+        <div className="loading-overlay" id="loadingOverlay">
         <div className="spinner-ldr">
           <img src={spinner} alt="Loading..." />
+        </div>
         </div>
       ) : isWalletWarningVisible ? (
         <WalletTokenWarning /> // Show Wallet Token Warning pop-up if tokens are insufficient
@@ -211,10 +182,10 @@ const Step2 = ({ isActive, setActiveStep, step2Data, setStep3Data }: any) => {
         </div>
       )}
 
-      {/* <SubscriptionPopUp
+      <SubscriptionPopUp
         show={showSubscriptionPopup}
         handleClose={() => setShowSubscriptionPopup(false)}
-      /> */}
+      />
 
 
       <div className="buttons">

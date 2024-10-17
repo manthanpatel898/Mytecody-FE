@@ -20,37 +20,6 @@ declare global {
   }
 }
 
-// Reusable Title component
-const Title = ({ isInactive }: { isInactive: boolean }) => (
-  <div className="title">{isInactive ? "Payment Details" : "Verified Payment Details"}</div>
-);
-
-// Reusable Description component
-const Description = ({ isInactive }: { isInactive: boolean }) => (
-  <p>{isInactive ? "Please set your payment method" : "Payment method has been verified successfully!"}</p>
-);
-
-// Manage subscription button component
-const ManageSubscription = ({ onBillingSession }: { onBillingSession: () => void }) => (
-  <div className="manage-subscription-container">
-    <p>Further, you can manage your subscription below:</p>
-    <button className="btn-main btn btn-primary" type="button" onClick={onBillingSession}>
-      Click Here
-    </button>
-  </div>
-);
-
-// Payment elements component using Stripe Pricing Table
-const PaymentElements = ({ stripeCustomerSession }: { stripeCustomerSession: string | null }) => (
-  stripeCustomerSession ? (
-
-    <stripe-pricing-table pricing-table-id="prctbl_1Q2CZPP9gvplOqVlDrLWVdKk"
-      publishable-key="pk_test_51OxYZdP9gvplOqVlLJtjogJXtKJxacCdw1GsKghcYG3nCxp7iSP1xRinEsOXmOI9lrgp72iImifmN54vtdagiFRH00gANu6J8l"
-      customer-session-client-secret={stripeCustomerSession}>
-    </stripe-pricing-table>
-  ) : null
-);
-
 const SubscriptionPopUp = ({
   show,
   handleClose,
@@ -61,7 +30,38 @@ const SubscriptionPopUp = ({
   const [stripeCustomerSession, setStripeCustomerSession] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [subscribed, setSubscribed] = useState<string | null>(null);
-  const isInactive = subscribed === "inactive";
+  const isActiveSubscription = subscribed === "active" || subscribed === "trialing";
+
+  // Reusable Title component
+  const Title = ({ isActive }: { isActive: boolean }) => (
+    <div className="title">{isActive ? "Verified Payment Details" : "Payment Details"}</div>
+  );
+
+  // Reusable Description component
+  const Description = ({ isActive }: { isActive: boolean }) => (
+    <p>{isActive ? "Payment method has been verified successfully!" : "Please set your payment method."}</p>
+  );
+
+  // Manage subscription button component
+  const ManageSubscription = ({ onBillingSession }: { onBillingSession: () => void }) => (
+    <div className="manage-subscription-container">
+      <p>You can manage your subscription below:</p>
+      <button className="btn-main btn btn-primary" type="button" onClick={onBillingSession}>
+        Manage Subscription
+      </button>
+    </div>
+  );
+
+  // Payment elements component for Stripe
+  const PaymentElements = () => (
+    stripeCustomerSession ? (
+      <stripe-pricing-table
+        pricing-table-id="prctbl_1Q2CZPP9gvplOqVlDrLWVdKk"
+        publishable-key="pk_test_51OxYZdP9gvplOqVlLJtjogJXtKJxacCdw1GsKghcYG3nCxp7iSP1xRinEsOXmOI9lrgp72iImifmN54vtdagiFRH00gANu6J8l"
+        customer-session-client-secret={stripeCustomerSession}
+      ></stripe-pricing-table>
+    ) : <div>No payment details available.</div>
+  );
 
   // Fetch Stripe customer session and subscription status
   useEffect(() => {
@@ -84,10 +84,10 @@ const SubscriptionPopUp = ({
       try {
         const res = await verifySubscriptionAPI();
         if (res.status === "success") {
-          const isSubscribed = res?.data?.status === "active" || res?.data?.status === "trialing";
-          localStorage.setItem("isSubscribed", isSubscribed.toString());
-          setSubscribed(res?.data?.status);
-          if (res?.data?.status !== "active") {
+          const status = res?.data?.status;
+          localStorage.setItem("isSubscribed", status === "active" || status === "trialing" ? "true" : "false");
+          setSubscribed(status);
+          if (status !== "active" && status !== "trialing") {
             fetchStripeCustomerSession();
           }
         } else {
@@ -121,17 +121,18 @@ const SubscriptionPopUp = ({
 
   // Main content of the subscription popup
   const SubscriptionContent = () => {
-    if (subscribed === null) return null;
+    if (subscribed === null) return null; // Don't render until subscription status is loaded
+
     return (
       <>
         <div className="header">
-          <Title isInactive={isInactive} />
-          <Description isInactive={isInactive} />
+          <Title isActive={isActiveSubscription} />
+          <Description isActive={isActiveSubscription} />
         </div>
-        {!isInactive ? (
+        {isActiveSubscription ? (
           <ManageSubscription onBillingSession={generateBillingSession} />
         ) : (
-          <PaymentElements stripeCustomerSession={stripeCustomerSession} />
+          <PaymentElements />
         )}
       </>
     );

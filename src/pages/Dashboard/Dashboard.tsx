@@ -50,7 +50,7 @@ const Dashboard = () => {
   // Function to create a new proposal
   const createProposal = () => {
     localStorage.removeItem("proposal_id");
-    navigate("/steps");
+    navigate("/steps1");
   };
 
   // Pagination controls
@@ -68,7 +68,8 @@ const Dashboard = () => {
 
   const navigateStep = (proposal: any) => {
     setItem('proposal_id', proposal._id); // Store the proposal_id in localStorage
-    navigate('/steps');
+    if (proposal.step == 0) { navigate('/steps1') }
+    else navigate(`/steps${proposal.step}`)
   };
 
   // Function to open the delete confirmation modal

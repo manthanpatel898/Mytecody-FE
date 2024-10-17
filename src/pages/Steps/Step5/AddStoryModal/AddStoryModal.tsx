@@ -78,8 +78,8 @@ const AddStoryModal = ({ closeModal, proposalId, stakeholder, epicId, refreshEpi
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay-add-storie">
+      <div className="modal-content-add-storie">
         <h2>Add Story</h2>
         <form onSubmit={(e) => e.preventDefault()}>
           {/* Title Input */}

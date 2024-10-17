@@ -1,6 +1,6 @@
 @import "../../../../styles/base/variables.scss";
 
-.modal-overlay {
+.modal-overlay-epic-edit {
     position: fixed;
     top: 0;
     left: 0;
@@ -13,7 +13,7 @@
     z-index: 1000;
 }
 
-.modal-content {
+.modal-content-epic-edit {
     background: $color-white;
     padding: 20px;
     border-radius: 8px;

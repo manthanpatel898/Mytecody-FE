@@ -59,8 +59,8 @@ const UpdateTaskModal = ({ closeModal, proposalId, stakeholder, epicId, storyId,
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay-edit-task">
+      <div className="modal-content-edit-task">
         <h2>Update Task</h2>
         <form onSubmit={(e) => e.preventDefault()}>
           {/* Description Textarea */}

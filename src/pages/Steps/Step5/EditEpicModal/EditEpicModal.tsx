@@ -65,8 +65,8 @@ const EditEpicModal = ({ closeModal, proposalId, stakeholder, epic, refreshEpics
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay-epic-edit">
+      <div className="modal-content-epic-edit">
         <h2>Edit Epic</h2>
         <form onSubmit={(e) => e.preventDefault()}>
           <Input

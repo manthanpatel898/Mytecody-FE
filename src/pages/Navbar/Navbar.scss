@@ -67,7 +67,7 @@
     }
   
     @media (max-width: 768px) {
-      width: 250px;
+      width: 170px;
       transform: translateX(-100%); /* Hidden offscreen by default for small screens */
   
       .nav-item a span {
@@ -80,8 +80,8 @@
   .hamburger-icon {
     display: none;
     position: fixed;
-    top: 70px; /* Adjust position */
-    left: 20px;
+    top: 16px; /* Adjust position */
+    left: 5px;
     font-size: 24px;
     background: none;
     border: none;

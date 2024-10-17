@@ -7,15 +7,8 @@ import {
 } from "../../service/subscription.service";
 import { toast } from "react-toastify";
 import spinner from "../../assets/spinner.svg";
-const loadStripeScript = () => {
-  if (!document.querySelector('script[src="https://js.stripe.com/v3/pricing-table.js"]')) {
-    const script = document.createElement("script");
-    script.src = "https://js.stripe.com/v3/pricing-table.js";
-    script.async = true;
-    document.body.appendChild(script);
-  }
-};
 
+// TypeScript declaration for JSX Stripe element
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -31,11 +24,9 @@ const Subscription = () => {
   const [stripeCustomerSession, setStripeCustomerSession] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [subscribed, setSubscribed] = useState<string | null>(null);
-  const isInactive = subscribed === "inactive";
+  const isActiveSubscription = subscribed === "active" || subscribed === "trialing";
 
   useEffect(() => {
-    loadStripeScript(); // Load the Stripe script when the component mounts
-
     const fetchStripeCustomerSession = async () => {
       try {
         const data = await getCustomerIntentAPI();
@@ -58,7 +49,7 @@ const Subscription = () => {
           const isSubscribed = res?.data?.status === "active" || res?.data?.status === "trialing";
           localStorage.setItem("isSubscribed", isSubscribed.toString());
           setSubscribed(res?.data?.status);
-          if (res?.data?.status !== "active") {
+          if (!isSubscribed) {
             fetchStripeCustomerSession();
           }
         } else {
@@ -91,15 +82,15 @@ const Subscription = () => {
 
   const Title = () => (
     <div className="title">
-      {isInactive ? "Payment Details" : "Verified Payment Details"}
+      {isActiveSubscription ? "Verified Payment Details" : "Payment Details"}
     </div>
   );
 
   const Description = () => (
     <p>
-      {isInactive
-        ? "Please set your payment method"
-        : "Payment method has been verified successfully!"}
+      {isActiveSubscription
+        ? "Payment method has been verified successfully!"
+        : "Please set your payment method"}
     </p>
   );
 
@@ -118,10 +109,11 @@ const Subscription = () => {
 
   const PaymentElements = () => (
     stripeCustomerSession ? (
-      <stripe-pricing-table pricing-table-id="prctbl_1Q2CZPP9gvplOqVlDrLWVdKk"
-      publishable-key="pk_test_51OxYZdP9gvplOqVlLJtjogJXtKJxacCdw1GsKghcYG3nCxp7iSP1xRinEsOXmOI9lrgp72iImifmN54vtdagiFRH00gANu6J8l"
-      customer-session-client-secret={stripeCustomerSession}>
-    </stripe-pricing-table>
+      <stripe-pricing-table
+        pricing-table-id="prctbl_1Q2CZPP9gvplOqVlDrLWVdKk"
+        publishable-key="pk_test_51OxYZdP9gvplOqVlLJtjogJXtKJxacCdw1GsKghcYG3nCxp7iSP1xRinEsOXmOI9lrgp72iImifmN54vtdagiFRH00gANu6J8l"
+        customer-session-client-secret={stripeCustomerSession}
+      ></stripe-pricing-table>
     ) : <div>test</div>
   );
 
@@ -133,25 +125,21 @@ const Subscription = () => {
           <Title />
           <Description />
         </div>
-
-        <PaymentElements />
-        {/* {!isInactive ? <ManageSubscription /> : <PaymentElements />} */}
+        {isActiveSubscription ? <ManageSubscription /> : <PaymentElements />}
       </>
     );
   };
 
   return (
-    <>
-      <div className="subscriptionPageWrapper">
-        {loading ? (
-          <div className="loader">
-            <img src={spinner} alt="Loading..." />
-          </div>
-        ) : (
-          <SubscriptionContent />
-        )}
-      </div>
-    </>
+    <div className="subscriptionPageWrapper">
+      {loading ? (
+        <div className="loader">
+          <img src={spinner} alt="Loading..." />
+        </div>
+      ) : (
+        <SubscriptionContent />
+      )}
+    </div>
   );
 };
 

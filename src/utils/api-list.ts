@@ -6,6 +6,7 @@ export const Login ={
 export const Proposal = {
     GET_CONVERSATION:'proposal/get/conversation/',
     GET_PROJECT_VISION:'proposal/get/projectVision/',
+    GENERATE_PROJECT_VISION:'proposal/generate/vision/',
     GENERATE_CONVERSATION:'proposal/generate/conversation',
     GET_PROPOSAL:'proposal/get/proposals/page/',
     CONVERSATION_SAVE:'proposal/conversation/save/',
@@ -28,7 +29,10 @@ export const Proposal = {
     GENERATE_TASKS:'proposal/generate/tasks/',
     SEND_PROPOSAL:'proposal/generate/detail/report/',
     GENERATE_PROPOSAL:'proposal/generate/proposal/',
-    DELETE_PROPOSAL:'proposal/delete/proposal/'
+    DELETE_PROPOSAL:'proposal/delete/proposal/',
+    DELETE_EPIC:'proposal/deleteEpic/',
+    DELETE_STORIE:'proposal/delete/story/',
+    DELETE_TASK:'proposal/delete/task/'
 }
 
 export const Wallet = {

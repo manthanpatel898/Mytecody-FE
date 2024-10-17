@@ -1,6 +1,6 @@
 import './Step4.scss'; // Include your SCSS
 import Title from '../../../components/Title/Title';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import spinner from '../../../assets/spinner.svg';
 import { getStackholderAPI, saveStackholderAPI } from '../../../service/Proposal.service'; // Import saveStackholderAPI and getWalletInfoAPI
 import { AddnewIcon } from '../../../assets/addnew_icon';
@@ -15,18 +15,9 @@ const Step4 = ({ isActive, setActiveStep, step4Data }: any) => {
   const [proposalId, setProposalId] = useState<string | null>(null);
   const [isSubmitStackholderData, setIsSubmitStackholderData] = useState(false); // For disabling button and showing loader
   const [stackHolderData, setStackHolderData] = useState<any>([]);
-  const [editBtn, setEditBtn] = useState(false); // Control edit functionality
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(false); // Control edit functionality
   const [editIndex, setEditIndex] = useState(-1);
   const [isWalletWarningVisible, setIsWalletWarningVisible] = useState(false); // Show pop-up for insufficient tokens
-
-  // Scroll to the bottom of the message container
-  const scrollToBottom = () => {
-    const messageEndRef = document.getElementById('messageEndRef');
-    if (messageEndRef) {
-      messageEndRef.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   // Save Stackholder Data Function
   const saveStackholderData = async () => {
@@ -108,8 +99,10 @@ const Step4 = ({ isActive, setActiveStep, step4Data }: any) => {
   return (
     <div className="stackholder-container">
       {isLoading ? (
-        <div className="spinner-ldr">
-          <img src={spinner} alt="Loading..." />
+        <div className="loading-overlay" id="loadingOverlay">
+          <div className="spinner-ldr">
+            <img src={spinner} alt="Loading..." />
+          </div>
         </div>
       ) : isWalletWarningVisible ? (
         <WalletTokenWarning /> // Show Wallet Token Warning pop-up if tokens are insufficient
@@ -145,7 +138,7 @@ const Step4 = ({ isActive, setActiveStep, step4Data }: any) => {
                         ...stackHolderData.slice(index + 1),
                       ])
                     }
-                    className={editIndex === index ? 'form-control' : 'form-control disabled'}
+                    className={isEdit ? 'form-control' : 'form-control disabled'} // Make input editable when isEdit is true
                     type="text"
                     value={item}
                   />
@@ -169,16 +162,16 @@ const Step4 = ({ isActive, setActiveStep, step4Data }: any) => {
               ))}
             </div>
           </div>
-
-
         </div>
       )}
 
       <div className="buttons">
-        <button onClick={() => setEditBtn(true)} className="btn btn-primary getStartedBtn">
+        {/* Button to enable modification mode */}
+        <button onClick={() => setIsEdit(true)} className="btn btn-primary getStartedBtn">
           Let Me Modify
         </button>
 
+        {/* Submit button logic remains unchanged */}
         <button onClick={saveStackholderData} className={isSubmitStackholderData ? 'btn' : 'btn btn-primary'} disabled={isSubmitStackholderData}>
           {isSubmitStackholderData ? <img src={spinner} alt="spinner Icon" width={24} /> : 'Submit'}
         </button>

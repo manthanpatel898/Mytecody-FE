@@ -3,7 +3,7 @@ import Title from '../../../components/Title/Title';
 import { useEffect, useRef, useState } from 'react';
 import spinner from '../../../assets/spinner.svg';
 import { LoaderIcon } from '../../../assets/loader_icon';
-import { generateEpicsAPI, getAllEpicsApi, getStackholderAPI, getEpicsFromStackholderAPI, deleteEpicAPI, generateStoriesAPI, generateTasksAPI } from '../../../service/Proposal.service'; // Import the APIs
+import { generateEpicsAPI, getAllEpicsApi, getStackholderAPI, getEpicsFromStackholderAPI, deleteEpicAPI, generateStoriesAPI, generateTasksAPI, deleteTaskApi, deleteEpicApi, deleteStorieApi } from '../../../service/Proposal.service'; // Import the APIs
 import { EditIcon } from '../../../assets/edit_icon';
 import { DeleteIcon } from '../../../assets/delete_icon';
 import { AddnewIcon } from '../../../assets/addnew_icon';
@@ -49,7 +49,9 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
   const [expandedEpicIndex, setExpandedEpicIndex] = useState<number | null>(null); // Track which epic is expanded
   const [selectedEpic, setSelectedEpic] = useState<Epic | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleteModalOpenForEpic, setIsDeleteModalOpenForEpic] = useState(false);
+  const [isDeleteModalOpenForStorie, setIsDeleteModalOpenForStorie] = useState(false);
+  const [isDeleteModalOpenForTask, setIsDeleteModalOpenForTask] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [expandedStoryIndex, setExpandedStoryIndex] = useState<number | null>(null);
@@ -60,7 +62,7 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
   const [selectedStory, setSelectedStory] = useState<any | null>(null); // For storing the selected story details
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
   const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false); // For managing the story modal
-  const [selectedTask, setSelectedTask] = useState(false); // For managing the story modal
+  const [selectedTask, setSelectedTask] = useState<any | null>(null); // For managing the story modal
   const [isWalletWarningVisible, setIsWalletWarningVisible] = useState(false); // Show pop-up for insufficient tokens
   // Ensure proposalId is a string, fallback to empty string if null
   const proposalIdString = proposalId ?? '';
@@ -142,7 +144,8 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
 
       if (response?.status === 'success') {
         console.log('Epics generated successfully');
-        refreshEpics();
+        // refreshEpics();
+        getAllEpics(proposalId);
       } else {
         console.log('Failed to generate epics.');
       }
@@ -175,7 +178,7 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
 
   const handleDeleteEpic = (epic: any) => {
     setSelectedEpic(epic); // Set the selected epic data
-    setIsDeleteModalOpen(true); // Open the delete modal
+    setIsDeleteModalOpenForEpic(true); // Open the delete modal
   };
 
   // Function to handle edit button click
@@ -200,20 +203,52 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
   };
 
 
-  const confirmDelete = async () => {
+  const confirmDeleteEpic = async () => {
     setLoadingDelete(true);
-    const payload = {
-      proposal_id: proposalId, // dynamic proposal id
-      stakeholder: stackholderData[stackholderIndex], // dynamic stakeholder
-      id: selectedEpic!.id // ID of the epic to be deleted
-    };
-
+    if (!proposalId)
+      return;
     try {
-      const response = await deleteEpicAPI(payload);
+      const response = await deleteEpicApi(proposalId, stackholderData[stackholderIndex], selectedEpic!.id);
       if (response.status === 'success') {
         // Handle success (refresh epics, close modal, etc.)
         refreshEpics(); // refresh the epic list
-        setIsDeleteModalOpen(false);
+        setIsDeleteModalOpenForEpic(false);
+      }
+    } catch (error) {
+      console.error('Failed to delete epic:', error);
+    } finally {
+      setLoadingDelete(false);
+    }
+  };
+
+  const confirmDeleteStorie = async () => {
+    setLoadingDelete(true);
+    if (!proposalId)
+      return;
+    try {
+      const response = await deleteStorieApi(proposalId, stackholderData[stackholderIndex], selectedEpic!.id, selectedStory!.id);
+      if (response.status === 'success') {
+        // Handle success (refresh epics, close modal, etc.)
+        refreshEpics(); // refresh the epic list
+        setIsDeleteModalOpenForStorie(false);
+      }
+    } catch (error) {
+      console.error('Failed to delete epic:', error);
+    } finally {
+      setLoadingDelete(false);
+    }
+  };
+
+  const confirmDeleteTask = async () => {
+    setLoadingDelete(true);
+    if (!proposalId)
+      return;
+    try {
+      const response = await deleteTaskApi(proposalId, stackholderData[stackholderIndex], selectedEpic!.id, selectedStory!.id, selectedTask!.id);
+      if (response.status === 'success') {
+        // Handle success (refresh epics, close modal, etc.)
+        refreshEpics(); // refresh the epic list
+        setIsDeleteModalOpenForTask(false);
       }
     } catch (error) {
       console.error('Failed to delete epic:', error);
@@ -277,7 +312,10 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
   };
 
 
-  const handleDeleteStory = (storie: any) => {
+  const handleDeleteStory = (storie: any, epic: any) => {
+    setSelectedEpic(epic); // Set the selected epic data
+    setSelectedStory(storie)
+    setIsDeleteModalOpenForStorie(true); // Open the delete modal
 
   }
 
@@ -289,8 +327,16 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
   };
 
 
-  const handleDeleteTask = (task: any) => {
+  const handleDeleteTask = (task: any, storie: any, epic: any) => {
+    setSelectedEpic(epic); // Set the selected epic data
+    setSelectedStory(storie);
+    setSelectedTask(task);
+    setIsDeleteModalOpenForTask(true); // Open the delete modal
 
+  }
+
+  const handleSubmit = () => {
+    setActiveStep('STEPS6');
   }
 
   // Fetch wallet info and check if tokens are available
@@ -323,8 +369,10 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
   return (
     <div className="epics-container">
       {isLoading ? (
+        // <div className="loading-overlay" id="loadingOverlay">
         <div className="spinner-ldr">
           <img src={spinner} alt="Loading..." />
+          {/* </div> */}
         </div>
       ) : isWalletWarningVisible ? (
         <WalletTokenWarning /> // Show Wallet Token Warning pop-up if tokens are insufficient
@@ -405,7 +453,7 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
                                   <span onClick={() => handleEditStory(story, epic)}>
                                     <EditIcon />
                                   </span>
-                                  <span onClick={() => handleDeleteStory(story)}>
+                                  <span onClick={() => handleDeleteStory(story, epic)}>
                                     <DeleteIcon />
                                   </span>
                                 </div>
@@ -434,7 +482,7 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
                                               <span onClick={() => handleEditTask(task, story, epic)}>
                                                 <EditIcon />
                                               </span>
-                                              <span onClick={() => handleDeleteTask(task)}>
+                                              <span onClick={() => handleDeleteTask(task, story, epic)}>
                                                 <DeleteIcon />
                                               </span>
                                             </div>
@@ -479,10 +527,19 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
                 </button>
               )
             }
-
-            <button className="btn btn-primary">
-              Submit
-            </button>
+            {epicsData.length > 0 &&
+              epicsData[0] &&
+              epicsData[0].user_stories &&
+              epicsData[0].user_stories.length > 0 &&
+              epicsData[0].user_stories[0] &&
+              epicsData[0].user_stories[0].tasks &&
+              epicsData[0].user_stories[0].tasks.length > 0
+              && (
+                <button className="btn btn-primary" onClick={handleSubmit}>
+                  Submit
+                </button>
+              )
+            }
           </div>
         </div>
       )}
@@ -507,12 +564,32 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
         />
       )}
       {/* Confirmation Modal for Delete */}
-      {isDeleteModalOpen && (
+      {isDeleteModalOpenForEpic && (
         <ConfirmationModal
           title="Delete Epic"
           message="Are you sure you want to delete this epic?"
-          onConfirm={confirmDelete}
-          onCancel={() => setIsDeleteModalOpen(false)}
+          onConfirm={confirmDeleteEpic}
+          onCancel={() => setIsDeleteModalOpenForEpic(false)}
+          isLoading={loadingDelete}
+        />
+      )}
+
+      {isDeleteModalOpenForStorie && (
+        <ConfirmationModal
+          title="Delete Storie"
+          message="Are you sure you want to delete this storie?"
+          onConfirm={confirmDeleteStorie}
+          onCancel={() => setIsDeleteModalOpenForStorie(false)}
+          isLoading={loadingDelete}
+        />
+      )}
+
+      {isDeleteModalOpenForTask && (
+        <ConfirmationModal
+          title="Delete Task"
+          message="Are you sure you want to delete this task?"
+          onConfirm={confirmDeleteTask}
+          onCancel={() => setIsDeleteModalOpenForTask(false)}
           isLoading={loadingDelete}
         />
       )}

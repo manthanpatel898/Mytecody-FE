@@ -1,0 +1,78 @@
+@import "../../../../styles/base/variables.scss";
+
+
+.modal-overlay-edit-task {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content-edit-task {
+    background: $color-white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+  
+    h2 {
+      font-size: 24px;
+      color: $primary-color;
+      margin-bottom: 20px;
+    }
+  
+    .input-container {
+      margin-bottom: 16px;
+  
+      label {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        display: block;
+      }
+  
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+  
+      .error {
+        color: red;
+        font-size: 12px;
+        margin-top: 4px;
+      }
+    }
+  
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+  
+      .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 4px;
+  
+        &.btn-primary {
+          background-color: $primary-color;
+          color: $color-white;
+          border: none;
+        }
+  
+        &.btn-secondary {
+          background-color: $color-light-gray;
+          color: $color-dark;
+          border: none;
+        }
+      }
+    }
+  }
+  

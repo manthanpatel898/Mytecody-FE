@@ -16,15 +16,15 @@
     align-items: center;
 
     .logo-icon {
-      font-size: 30px;
-      color: #1f2833;
-      margin-right: 10px;
+      height: 40px;
+      width: 40px;
     }
 
     .logo-text {
       font-size: 20px;
       color: #1f2833;
       margin: 0;
+      padding-left: 10px;
     }
   }
 
@@ -71,6 +71,10 @@
 @media (max-width: 768px) {
   .app-header {
     padding: 0 10px;
+
+    .logo-container{
+      padding-left: 40px;
+    }
 
     .header-right {
       .profile-info {

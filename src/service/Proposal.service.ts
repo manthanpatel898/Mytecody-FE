@@ -40,6 +40,19 @@ export async function getProjectVision(proposal_id: string) {
   }
 }
 
+export async function generateProjectVisionAPI(proposal_id: string) {
+  try {
+    const response = await makeRequest('post', Proposal.GENERATE_PROJECT_VISION + proposal_id);
+    if (response && response.status === "success") {
+      return response;
+    } else {
+      throw response;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
 export async function generateConversationAPI(payload: any) {
   try {
     const response = await makeRequest('post', Proposal.GENERATE_CONVERSATION, payload);
@@ -318,6 +331,45 @@ export async function generateProposalAPI(proposal_id: any) {
 export async function deleteProposalAPI(proposalId: string) {
   try {
     const response = await makeRequest('delete', Proposal.DELETE_PROPOSAL + proposalId);
+    if (response && response.status === "success") {
+      return response;
+    } else {
+      throw response;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+export async function deleteEpicApi(proposalId: string,stackholder:string,epicId:string) {
+  try {
+    const response = await makeRequest('delete', Proposal.DELETE_EPIC + proposalId + '/' + stackholder + '/' + epicId);
+    if (response && response.status === "success") {
+      return response;
+    } else {
+      throw response;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+export async function deleteStorieApi(proposalId: string,stackholder:string,epicId:string, storieId: string) {
+  try {
+    const response = await makeRequest('delete', Proposal.DELETE_STORIE + proposalId + '/' + stackholder + '/' + epicId + '/' + storieId);
+    if (response && response.status === "success") {
+      return response;
+    } else {
+      throw response;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+export async function deleteTaskApi(proposalId: string,stackholder:string,epicId:string, storieId: string, taskId:string) {
+  try {
+    const response = await makeRequest('delete', Proposal.DELETE_TASK + proposalId + '/' + stackholder + '/' + epicId + '/' + storieId + '/' + taskId);
     if (response && response.status === "success") {
       return response;
     } else {

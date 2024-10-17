@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.clear(); // Clear local storage on logout
-    navigate('/sign-in'); // Redirect to the sign-in page
+    navigate('/'); // Redirect to the sign-in page
   };
 
   // Function to close the navbar after link click

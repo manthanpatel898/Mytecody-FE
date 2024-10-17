@@ -105,8 +105,10 @@ const Step3 = ({ isActive, setActiveStep, step3Data, setStep4Data }: any) => {
   return (
     <div className="business-container">
       {isLoading ? (
+        <div className="loading-overlay" id="loadingOverlay">
         <div className="spinner-ldr">
           <img src={spinner} alt="Loading..." />
+        </div>
         </div>
       ) : isWalletWarningVisible ? (
         <WalletTokenWarning /> // Show Wallet Token Warning pop-up if tokens are insufficient

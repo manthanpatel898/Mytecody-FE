@@ -6,22 +6,52 @@ import { getWalletInfoAPI } from '../../../service/Wallet.service'; // Import wa
 import spinner from '../../../assets/spinner.svg'; // Assuming you have a spinner icon
 import { DownloadIcon } from '../../../assets/download_icon';
 import WalletTokenWarning from '../../../components/WalletTokenWarning/WalletTokenWarning'; // Import the wallet warning pop-up
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import ProfileCompletionPopUp from '../../../components/ProfileCompletionPopUp/ProfileCompletionPopUp'; // Import custom ProfileCompletionPopUp
+import { getIndividualProfileAPI } from '../../../service/IndividualProfile.service';
 
 const Step6 = ({ setActiveStep }: any) => {
-  const [isLoading, setIsLoading] = useState(true); // State for loader
+  const [isLoading, setIsLoading] = useState(false); // State for loader
   const [isSendingProposal, setIsSendingProposal] = useState(false); // State for send proposal button
   const [proposalData, setProposalData] = useState<any>(null); // State to store proposal data
   const [proposalId, setProposalId] = useState<string | null>(null); // State for proposal ID
   const [isWalletWarningVisible, setIsWalletWarningVisible] = useState(false); // State for wallet warning
+  const [logoImage, setLogoImage] = useState<string | null>(null); // State for profile logo image
+  const [showProfilePopUp, setShowProfilePopUp] = useState(false); // Show/hide profile completion pop-up
+  const navigate = useNavigate(); // Initialize useNavigate for navigation
 
-  // Fetch Wallet Info and Proposal Data when component mounts
+  // Fetch individual profile on mount
   useEffect(() => {
     const storedProposalId = localStorage.getItem("proposal_id"); // Get proposal_id from localStorage
     if (storedProposalId) {
       setProposalId(storedProposalId);
-      fetchWalletInfo(); // Fetch wallet info before loading the proposal
+      fetchIndividualProfile(); // Fetch the individual profile data
+    } else {
+      setIsLoading(false); // Stop loading if no proposal ID is found
     }
   }, []);
+
+  // Fetch individual profile
+  const fetchIndividualProfile = async () => {
+    try {
+      const response = await getIndividualProfileAPI(); // Call the API
+      if (response?.status === "success" && response.data) {
+        const profile = response.data;
+        if (profile.logo_image) {
+          setLogoImage(profile.logo_image); // Set the logo image if profile is complete
+          fetchWalletInfo(); // Fetch wallet info because profile is complete
+          setIsLoading(true)
+        } else {
+          setShowProfilePopUp(true); // Show pop-up if profile is incomplete
+        }
+      } else {
+        setShowProfilePopUp(true); // Show pop-up if profile data is missing
+      }
+    } catch (error) {
+      console.error("Error fetching individual profile:", error);
+      setShowProfilePopUp(true); // Show pop-up on error as well
+    }
+  };
 
   // Fetch wallet info and check if tokens are available
   const fetchWalletInfo = async () => {
@@ -31,20 +61,19 @@ const Step6 = ({ setActiveStep }: any) => {
         const availableTokens = response.data.availableTokens;
         if (availableTokens <= 0) {
           setIsWalletWarningVisible(true); // Show wallet warning if tokens are insufficient
-          return; // Stop further actions if tokens are insufficient
-        }
-        // Fetch proposal data if tokens are sufficient
-        if (proposalId) {
-          fetchProposalData(proposalId);
+        } else {
+          // Fetch proposal data if tokens are sufficient
+          await fetchProposalData(proposalId!);
         }
       }
     } catch (error) {
       console.error('Error fetching wallet info:', error);
+    } finally {
+      setIsLoading(false); // Hide loader after checking wallet and proposal data
     }
   };
 
   const fetchProposalData = async (id: string) => {
-    setIsLoading(true); // Show loader during API call
     try {
       const response = await generateProposalAPI(id); // Call the API
       if (response?.status === 'success') {
@@ -54,8 +83,6 @@ const Step6 = ({ setActiveStep }: any) => {
       }
     } catch (error) {
       console.error('Failed to generate proposal:', error);
-    } finally {
-      setIsLoading(false); // Hide loader after API call
     }
   };
 
@@ -79,11 +106,26 @@ const Step6 = ({ setActiveStep }: any) => {
     setActiveStep('STEPS2'); // Move to the next step
   };
 
+  // Handle "Skip" button click
+  const handleSkip = () => {
+    setShowProfilePopUp(false); // Close the pop-up
+    setIsLoading(true)
+    fetchWalletInfo(); // Fetch wallet info after the user skips
+  };
+
+  // Handle "My Profile" button click to redirect to the individual profile page
+  const handleMyProfile = () => {
+    setShowProfilePopUp(false);
+    navigate('/individual-profile'); // Redirect to individual profile page
+  };
+
   return (
     <div className="final-proposal-container">
       {isLoading ? (
-        <div className="spinner-ldr">
-          <img src={spinner} alt="Loading..." />
+        <div className="loading-overlay" id="loadingOverlay">
+          <div className="spinner-ldr">
+            <img src={spinner} alt="Loading..." />
+          </div>
         </div>
       ) : isWalletWarningVisible ? ( // Display wallet warning if insufficient tokens
         <WalletTokenWarning />
@@ -150,11 +192,18 @@ const Step6 = ({ setActiveStep }: any) => {
               </div>
             </div>
           </div>
-
-          {/* Buttons Section */}
-
         </div>
       )}
+      
+      {/* Profile Completion Pop-Up */}
+      {showProfilePopUp && (
+        <ProfileCompletionPopUp
+          show={showProfilePopUp}
+          onClose={handleSkip} // Call fetchWalletInfo on skip
+          onMyProfile={handleMyProfile}
+        />
+      )}
+
       <div className="buttons">
         <button className="btn btn-primary" onClick={handleNext}>
           Submit

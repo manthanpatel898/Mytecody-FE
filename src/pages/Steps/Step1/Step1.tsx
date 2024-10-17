@@ -121,7 +121,7 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
       setIsConversationSubmit(false);
     }
   };
-  
+
   const updateResults = useCallback((newResults: string) => {
     setParentResults(newResults);
     scrollToBottom(); // Scroll after updating results
@@ -256,8 +256,10 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
   return (
     <div className="requirement-container">
       {isLoading ? (
-        <div className="spinner-ldr">
-          <img src={spinner} alt="Loading..." />
+        <div className="loading-overlay" id="loadingOverlay">
+          <div className="spinner-ldr">
+            <img src={spinner} alt="Loading..." />
+          </div>
         </div>
       ) : (
         <>
@@ -309,7 +311,7 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
       )}
 
       <div className="buttons">
-        { messages.length > 1 && (
+        {messages.length > 1 && (
           <button
             onClick={saveConversation}
             className={isConversationSubmit ? "btn" : "btn btn-primary"}
@@ -321,7 +323,7 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
             )}
           </button>
         )}
-        {!isSpeechModelActive  && (
+        {!isSpeechModelActive && (
           <button
             onClick={handleMicClick}
             className="btn btn-primary getStartedBtn"

@@ -32,6 +32,7 @@ const IndividualProfile: React.FC = () => {
   const [isUserProfile, setIsUserProfile] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Show loader initially
+  const [isImageUploading, setIsImageUploading] = useState(false); // State for image upload loader
   const { triggerUpdate } = useHeaderUpdate();
   const [logoImage, setLogoImage] = useState<string>("");
 
@@ -91,6 +92,7 @@ const IndividualProfile: React.FC = () => {
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.size <= 10 * 1024 * 1024) {
+      setIsImageUploading(true); // Start image upload loader
       try {
         const compressedFile = await imageCompression(file, { maxSizeMB: 2 });
         const imageUrl = await uploadImageToS3(compressedFile);
@@ -99,6 +101,8 @@ const IndividualProfile: React.FC = () => {
       } catch (error) {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image");
+      } finally {
+        setIsImageUploading(false); // Stop image upload loader
       }
     } else {
       toast.error("File size should be 10MB or less.");
@@ -176,7 +180,10 @@ const IndividualProfile: React.FC = () => {
       <form onSubmit={handleSubmit(isUserProfile ? onUpdate : onSubmit)}>
         <h3>{isUserProfile ? "Update Individual Profile" : "Create Individual Profile"}</h3>
         <div className="profile-image-wrapper">
-          <div className="profileImage" onClick={() => fileInputRef.current?.click()}>
+          <div
+            className={`profileImage ${isImageUploading ? "blurred" : ""}`}
+            onClick={() => fileInputRef.current?.click()}
+          >
             <img src={logoImage || imagePlaceHolder} alt="Profile" />
             <input
               type="file"
@@ -185,6 +192,11 @@ const IndividualProfile: React.FC = () => {
               onChange={handleImageChange}
               style={{ display: "none" }}
             />
+            {isImageUploading && (
+              <div className="loader-overlay">
+                <img src={spinner} alt="Loading..." />
+              </div>
+            )}
             <div className="image-edit-icon">
               <i className="fa fa-edit" />
             </div>

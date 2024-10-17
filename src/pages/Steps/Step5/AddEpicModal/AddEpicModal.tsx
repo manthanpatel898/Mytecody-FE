@@ -11,7 +11,6 @@ const AddEpicModal = ({ closeModal, proposalId, stakeholder, refreshEpics }: any
   const [description, setDescription] = useState('');
   const [errors, setErrors] = useState({ title: '', description: '' });
   const [loading, setLoading] = useState(false); // State to handle loading
-
   // Handle form submission
   const handleSubmit = async () => {
     const newErrors = { title: '', description: '' };
@@ -56,8 +55,8 @@ const AddEpicModal = ({ closeModal, proposalId, stakeholder, refreshEpics }: any
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay-epic">
+      <div className="modal-content-epic">
         <h2>Add Epic</h2>
         <form onSubmit={(e) => e.preventDefault()}>
           <Input

@@ -5,15 +5,6 @@ import { addTaskAPI } from '../../../../service/Proposal.service'; // Import you
 import spinner from '../../../../assets/spinner.svg'; // Assuming you have a spinner icon in your assets
 import Textarea from '../../../../components/Textarea/Textarea';
 
-interface AddTaskModalProps {
-  closeModal: () => void;
-  proposalId: string;
-  stakeholder: string;
-  epicId: string;
-  storyId: string;
-  refreshEpics: () => void;
-}
-
 const AddTaskModal = ({ closeModal, proposalId, stakeholder, epicId, storyId, refreshEpics }:any) => {
   const [description, setDescription] = useState('');
   const [complexity, setComplexity] = useState('');

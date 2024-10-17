@@ -1,5 +1,5 @@
 import { makeRequest } from "../api-config/api-config";
-import { IndividualProfile, Login, Proposal, Wallet } from "../utils/api-list";
+import { IndividualProfile } from "../utils/api-list";
 
 
 export async function getIndividualProfileAPI() {

@@ -41,7 +41,7 @@ const Header: React.FC = () => {
   return (
     <header className="app-header">
       <div className="logo-container" onClick={dashboardPage}>
-        <img src={logo} className="logo-icon" ></img>
+        <img src={logo} className="logo-icon" alt='logo'></img>
         <h1 className="logo-text">MYTE CODY</h1>
       </div>
 

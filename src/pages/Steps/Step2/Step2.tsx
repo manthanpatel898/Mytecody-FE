@@ -2,14 +2,14 @@ import './Step2.scss'; // Include your SCSS
 import Title from '../../../components/Title/Title';
 import volume from "../../../assets/volume.svg";
 import { useEffect, useRef, useState } from 'react';
-import Message from '../../../components/message/Message';
+import Messages from '../../../components/message/Message';
 import spinner from '../../../assets/spinner.svg';
 import { saveVisionAPI, getProjectVision } from '../../../service/Proposal.service'; // Import saveVisionAPI, getProjectVision, and getWalletInfoAPI
 import WalletTokenWarning from '../../../components/WalletTokenWarning/WalletTokenWarning'; // Import the WalletTokenWarning pop-up
 import { getWalletInfoAPI } from '../../../service/Wallet.service';
-import { verifySubscriptionAPI } from '../../../service/subscription.service';
+// import { verifySubscriptionAPI } from '../../../service/subscription.service';
 import { SUBSCRIPTION_PLAN_1 } from '../../../utils/constants';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import SubscriptionPopUp from '../../SubscriptionPopUp/SubscriptionPopUp';
 import { checkSubscriptionStatus } from '../../../utils/subscriptionUtils';
 
@@ -168,7 +168,7 @@ const Step2 = ({ isActive, setActiveStep, step2Data, setStep3Data }: any) => {
 
           <div className="message-content">
             {messages.map((msg, index) => (
-              <Message
+              <Messages
                 key={index}
                 senderType={msg.senderType}
                 setMessages={setMessages}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Title from '../../../components/Title/Title';
 import './Step6.scss'; // Include your SCSS
 import { generateProposalAPI, sendProposalAPI } from '../../../service/Proposal.service'; // Import the APIs
@@ -16,42 +16,8 @@ const Step6 = ({ setActiveStep }: any) => {
   const [proposalData, setProposalData] = useState<any>(null); // State to store proposal data
   const [proposalId, setProposalId] = useState<string | null>(null); // State for proposal ID
   const [isWalletWarningVisible, setIsWalletWarningVisible] = useState(false); // State for wallet warning
-  const [logoImage, setLogoImage] = useState<string | null>(null); // State for profile logo image
   const [showProfilePopUp, setShowProfilePopUp] = useState(false); // Show/hide profile completion pop-up
   const navigate = useNavigate(); // Initialize useNavigate for navigation
-
-  // Fetch individual profile on mount
-  useEffect(() => {
-    const storedProposalId = localStorage.getItem("proposal_id"); // Get proposal_id from localStorage
-    if (storedProposalId) {
-      setProposalId(storedProposalId);
-      fetchIndividualProfile(); // Fetch the individual profile data
-    } else {
-      setIsLoading(false); // Stop loading if no proposal ID is found
-    }
-  }, []);
-
-  // Fetch individual profile
-  const fetchIndividualProfile = async () => {
-    try {
-      const response = await getIndividualProfileAPI(); // Call the API
-      if (response?.status === "success" && response.data) {
-        const profile = response.data;
-        if (profile.logo_image) {
-          setLogoImage(profile.logo_image); // Set the logo image if profile is complete
-          fetchWalletInfo(); // Fetch wallet info because profile is complete
-          setIsLoading(true)
-        } else {
-          setShowProfilePopUp(true); // Show pop-up if profile is incomplete
-        }
-      } else {
-        setShowProfilePopUp(true); // Show pop-up if profile data is missing
-      }
-    } catch (error) {
-      console.error("Error fetching individual profile:", error);
-      setShowProfilePopUp(true); // Show pop-up on error as well
-    }
-  };
 
   // Fetch wallet info and check if tokens are available
   const fetchWalletInfo = async () => {
@@ -71,7 +37,28 @@ const Step6 = ({ setActiveStep }: any) => {
     } finally {
       setIsLoading(false); // Hide loader after checking wallet and proposal data
     }
-  };
+  }
+
+  // Fetch individual profile
+  const fetchIndividualProfile = async () => {
+    try {
+      const response = await getIndividualProfileAPI(); // Call the API
+      if (response?.status === "success" && response.data) {
+        const profile = response.data;
+        if (profile.logo_image) {
+          fetchWalletInfo(); // Fetch wallet info because profile is complete
+          setIsLoading(true);
+        } else {
+          setShowProfilePopUp(true); // Show pop-up if profile is incomplete
+        }
+      } else {
+        setShowProfilePopUp(true); // Show pop-up if profile data is missing
+      }
+    } catch (error) {
+      console.error("Error fetching individual profile:", error);
+      setShowProfilePopUp(true); // Show pop-up on error as well
+    }
+  }
 
   const fetchProposalData = async (id: string) => {
     try {
@@ -109,7 +96,7 @@ const Step6 = ({ setActiveStep }: any) => {
   // Handle "Skip" button click
   const handleSkip = () => {
     setShowProfilePopUp(false); // Close the pop-up
-    setIsLoading(true)
+    setIsLoading(true);
     fetchWalletInfo(); // Fetch wallet info after the user skips
   };
 
@@ -118,6 +105,17 @@ const Step6 = ({ setActiveStep }: any) => {
     setShowProfilePopUp(false);
     navigate('/individual-profile'); // Redirect to individual profile page
   };
+
+  // Fetch individual profile on mount
+  useEffect(() => {
+    const storedProposalId = localStorage.getItem("proposal_id"); // Get proposal_id from localStorage
+    if (storedProposalId) {
+      setProposalId(storedProposalId);
+      fetchIndividualProfile(); // Fetch the individual profile data
+    } else {
+      setIsLoading(false); // Stop loading if no proposal ID is found
+    }
+  }, []);
 
   return (
     <div className="final-proposal-container">

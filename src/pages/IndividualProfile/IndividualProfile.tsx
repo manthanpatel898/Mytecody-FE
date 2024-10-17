@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./IndividualProfile.scss";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -53,17 +53,11 @@ const IndividualProfile: React.FC = () => {
   const {
     values,
     handleChange,
-    handleBlur,
     handleSubmit,
     setValues,
-    setErrors,
   } = useForm<IndividualProfileFormValues>(initialValues, validate);
 
-  useEffect(() => {
-    fetchUserProfile();
-  }, []);
-
-  const fetchUserProfile = () => {
+  const fetchUserProfile = useCallback(() => {
     getIndividualProfileAPI()
       .then((response) => {
         if (response?.status === "success") {
@@ -87,8 +81,12 @@ const IndividualProfile: React.FC = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  };
-
+  }, [setValues]);
+  
+  useEffect(() => {
+    fetchUserProfile();
+  }, [fetchUserProfile]); // fetchUserProfile as a dependency here
+    
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.size <= 10 * 1024 * 1024) {

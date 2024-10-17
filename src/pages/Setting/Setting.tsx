@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import spinner from "../../assets/spinner.svg";
 import "./Setting.scss";
@@ -54,7 +53,7 @@ const Settings = () => {
     hourly_rate: false,
   });
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleEditClick = (name: string) => {
     setEditingState((prevState: any) => ({
@@ -68,9 +67,9 @@ const Settings = () => {
   };
 
   // Handle subscription navigation
-  const handleSubscriptionClick = () => {
-    navigate("/subscription");
-  };
+  // const handleSubscriptionClick = () => {
+  //   navigate("/subscription");
+  // };
 
   useEffect(() => {
     fetchUserSettings(setData, setIsLoading); // Fetch settings on component load

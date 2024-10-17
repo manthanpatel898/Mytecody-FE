@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import useSpeechToText, { ResultType } from "react-hook-speech-to-text";
+import useSpeechToText from "react-hook-speech-to-text";
 import { CloseIcon } from "../../assets/cancel";
 import "./SpeechToText.scss";
 import spinner from "../../assets/spinner.svg";
@@ -138,7 +138,7 @@ const SpeechToText: React.FC<AppProps> = ({
  const handleStopSpeech = useCallback(() => {
   stopSpeechToText();
   setIsplay(false);
-}, [stopSpeechToText, setIsplay, setBtnProcess]);
+}, [stopSpeechToText, setIsplay]);
 
 // Handler to stop speech recognition with delayed setBtnProcess(true)
 const handleProcessConversation = useCallback(() => {

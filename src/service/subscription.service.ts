@@ -1,5 +1,5 @@
 import { makeRequest } from "../api-config/api-config";
-import { IndividualProfile, Login, Proposal, Setting, Subscription, Wallet } from "../utils/api-list";
+import { Subscription } from "../utils/api-list";
 
 
 export async function fetchStripeProductsAPI() {

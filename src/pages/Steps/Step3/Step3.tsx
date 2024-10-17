@@ -16,11 +16,11 @@ const Step3 = ({ isActive, setActiveStep, step3Data, setStep4Data }: any) => {
   const messageEndRef = useRef<HTMLDivElement>(null);
 
   // Scroll to the bottom of the message container
-  const scrollToBottom = () => {
-    if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  // const scrollToBottom = () => {
+  //   if (messageEndRef.current) {
+  //     messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
 
   // Save Business Vertical Function
   const saveBusinessVertical = async () => {

@@ -9,7 +9,7 @@ import { login } from '../../service/Auth.service'; // Import your login API ser
 import { setItem } from '../../utils/localstorage-service'; // Assume you have these helpers
 import signInGoogle from '../../assets/images/googleSignIn_icon.svg';
 import { useGoogleLogin } from '@react-oauth/google'; // Assuming you're using react-oauth/google
-import CryptoJS from 'crypto-js'; // Import the encryption library
+// import CryptoJS from 'crypto-js'; // Import the encryption library
 
 const LoginPage: React.FC = () => {
     const [email, setEmail] = useState('');

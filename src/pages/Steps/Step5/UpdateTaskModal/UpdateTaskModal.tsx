@@ -1,19 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './UpdateTaskModal.scss'; // Include your SCSS file
 import Textarea from '../../../../components/Textarea/Textarea';
 import Button from '../../../../components/Button/Button';
 import { updateTaskAPI } from '../../../../service/Proposal.service'; // Import your API
 import spinner from '../../../../assets/spinner.svg'; // Assuming you have a spinner icon in your assets
-
-interface UpdateTaskModalProps {
-  closeModal: () => void;
-  proposalId: string;
-  stakeholder: string;
-  epicId: string;
-  storyId: string;
-  task: any; // This should be the task object that you want to update (containing description, complexity, etc.)
-  refreshEpics: () => void;
-}
 
 const UpdateTaskModal = ({ closeModal, proposalId, stakeholder, epicId, storyId, task, refreshEpics }:any) => {
   const [description, setDescription] = useState(task.description || '');

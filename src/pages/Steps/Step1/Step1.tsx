@@ -2,7 +2,7 @@ import './Step1.scss'; // Include your SCSS
 import Title from '../../../components/Title/Title';
 import volume from "../../../assets/volume.svg";
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Message from '../../../components/message/Message';
+import Messages from '../../../components/message/Message';
 import { generateConversationAPI, getConversation, saveConversationAPI } from '../../../service/Proposal.service'; // Added getWalletInfoAPI
 import spinner from '../../../assets/spinner.svg';
 import { MicrophoneIcon } from "../../../assets/microphone_icon";
@@ -31,12 +31,7 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
   const [resetMessage, setresetMessage] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [isConversationSubmit, setIsConversationSubmit] = useState(false);
-
-  // Proceed to the next step
-  const handleNext = () => {
-    setActiveStep('STEPS2');
-  };
-
+  console.log('isRecording',isRecording)
   // Default message if no proposal or conversation is found
   const setDefaultMessage = () => {
     setMessages([
@@ -139,22 +134,6 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
     }
   }, [parentResults]); // parentResults as the dependency
 
-  // Fetch project details when component mounts
-  useEffect(() => {
-    const proposalId = localStorage.getItem("proposal_id");
-    setProposalId(proposalId);
-
-    // Fetch wallet info first
-    fetchWalletInfo();
-
-    if (!proposalId) {
-      setDefaultMessage();
-      return;
-    }
-
-    fetchProjectConversation(proposalId);
-  }, []);
-
   const fetchWalletInfo = async () => {
     try {
       const response = await getWalletInfoAPI(); // Call the wallet info API
@@ -195,17 +174,28 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
     }
   };
 
+    // Fetch project details when component mounts
+    useEffect(() => {
+      const proposalId = localStorage.getItem("proposal_id");
+      setProposalId(proposalId);
+  
+      // Fetch wallet info first
+      fetchWalletInfo();
+  
+      if (!proposalId) {
+        setDefaultMessage();
+        return;
+      }
+  
+      fetchProjectConversation(proposalId);
+    }, []);
+
   const handleApiError = (error: any) => {
     console.error("API Error:", error);
     setDefaultMessage();
   };
 
-  useEffect(() => {
-    if (isBtnProcess) {
-      generateConversation();
-    }
-  }, [isBtnProcess]);
-
+  
   const generateConversation = async () => {
     setisLoadingProcess(true);
     let payload = {
@@ -253,6 +243,13 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
     }
   };
 
+  useEffect(() => {
+    if (isBtnProcess) {
+      generateConversation();
+    }
+  }, [isBtnProcess]); // Include generateConversation in the dependency array
+
+
   return (
     <div className="requirement-container">
       {isLoading ? (
@@ -274,7 +271,7 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
 
               <div className="message-content">
                 {messages.map((msg, index) => (
-                  <Message
+                  <Messages
                     key={index}
                     senderType={msg.senderType}
                     setMessages={setMessages}

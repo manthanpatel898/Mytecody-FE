@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './addTokenModel.scss'; // Add the relevant styles
 import { useStripe } from '@stripe/react-stripe-js';
 import { toast } from 'react-toastify';
@@ -53,19 +53,7 @@ const AddTokenModel = ({
     }
   };
 
-  useEffect(() => {
-    if (paymentIntent) {
-      handleConfirmPayment(paymentIntent.client_secret);
-    }
-  }, [paymentIntent]);
-
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
-    const amount = event.target.elements.tokens.value;
-    onSubmit(amount, selectedPaymentMethod);
-  };
-
-  const handleConfirmPayment = async (clientSecret: string) => {
+  const handleConfirmPayment = useCallback(async (clientSecret: string) => {
     if (!stripe) {
       console.error('Stripe has not loaded yet.');
       return;
@@ -88,6 +76,18 @@ const AddTokenModel = ({
     } finally {
       setIsProcessing(false);
     }
+  }, [stripe, selectedPaymentMethod, onPaymentComplete]);
+
+  useEffect(() => {
+    if (paymentIntent) {
+      handleConfirmPayment(paymentIntent.client_secret);
+    }
+  }, [paymentIntent, handleConfirmPayment]);
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    const amount = event.target.elements.tokens.value;
+    onSubmit(amount, selectedPaymentMethod);
   };
 
   const handleAddPaymentMethod = () => {

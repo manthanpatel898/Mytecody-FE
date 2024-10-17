@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { loadStripe, PaymentIntent } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import "./wallet.scss"; // Ensure the new styles are added to this file
@@ -19,7 +19,7 @@ const Wallet = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentIntent, setPaymentIntent] = useState<PaymentIntent | null>(null);
-  const [paymentResponse, setPaymentResponse] = useState<PaymentIntent | null>(null);
+  // const [paymentResponse, setPaymentResponse] = useState<PaymentIntent | null>(null);
 
   // Fetch wallet information
   const fetchWalletInfo = async () => {
@@ -53,7 +53,7 @@ const Wallet = () => {
 
   // Handle payment completion
   const handlePaymentComplete = (paymentIntent: PaymentIntent) => {
-    setPaymentResponse(paymentIntent);
+    // setPaymentResponse(paymentIntent);
     setIsModalOpen(false);
     fetchWalletInfo();
   };

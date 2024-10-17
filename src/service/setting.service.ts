@@ -1,5 +1,5 @@
 import { makeRequest } from "../api-config/api-config";
-import { IndividualProfile, Login, Proposal, Setting, Wallet } from "../utils/api-list";
+import { Setting } from "../utils/api-list";
 
 
 export async function getSettingAPI() {

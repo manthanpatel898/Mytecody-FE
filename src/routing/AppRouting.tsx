@@ -1,5 +1,4 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import PrivateLayout from "./layout/PrivateLayout";
 import PublicLayout from "./layout/PublicLayout";
 import Dashboard from "../pages/Dashboard/Dashboard";
@@ -8,7 +7,6 @@ import NotFound from "../components/WildCard/NotFound";
 import ForgotPassword from "../pages/ForgotPasswordPage/ForgotPasswordPage";
 import ResetPassword from "../pages/ResetPasswordPage/ResetPasswordPage";
 import Register from "../pages/RegisterPage/RegisterPage";
-import Layout from "../layout/layout";
 import LayoutPage from "./layout/LayoutPage";
 import Steps from "../pages/Steps/Steps";
 import Wallet from "../pages/wallet/wallet";

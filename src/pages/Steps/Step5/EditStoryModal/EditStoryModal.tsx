@@ -8,15 +8,6 @@ import { DeleteIcon } from '../../../../assets/delete_icon';
 import { AddnewIcon } from '../../../../assets/addnew_icon';
 import { updateStorieAPI } from '../../../../service/Proposal.service';
 
-interface EditStoryModalProps {
-  closeModal: () => void;
-  story: any; // Story data passed as a prop
-  epicId: string;
-  refreshEpics: () => void;
-  proposalId: string;
-  stakeholder: string;
-}
-
 const EditStoryModal= ({ closeModal, story, epicId, refreshEpics, proposalId, stakeholder }:any) => {
   const [title, setTitle] = useState(story.title || '');
   const [description, setDescription] = useState(story.description || '');

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaTrash, FaRedo, FaDownload, FaPlus } from 'react-icons/fa';
 import './Dashboard.scss'; // Include your SCSS
 import { deleteProposalAPI, getProposalAPI } from '../../service/Proposal.service';
@@ -15,12 +15,12 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [totalPages, setTotalPages] = useState(1); // Total pages from API
   const [currentPage, setCurrentPage] = useState(1); // Current page
-  const recordsPerPage = 10; // Records per page (same as per_page in API)
   const [apiCalled, setApiCalled] = useState(false); // New flag to control multiple API calls
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for opening/closing delete modal
   const [selectedProposal, setSelectedProposal] = useState<any | null>(null); // State to store selected proposal for deletion
-  const [isLoadingDelete, setLoadingDelete] = useState(false)
-  // Function to fetch proposals from the API
+  const [isLoadingDelete, setLoadingDelete] = useState(false);
+
+  // Function to fetch proposals from the API, memoized using useCallback
   const getProposal = async (page: number) => {
     if (apiCalled) return; // Prevent the API from being called again if it is already running
 
@@ -42,10 +42,10 @@ const Dashboard = () => {
     }
   };
 
-  // Call the getProposal function once when the component loads
+  // Call the getProposal function once when the component loads or when currentPage changes
   useEffect(() => {
     getProposal(currentPage);
-  }, []); // Call API when currentPage changes
+  }, []); // Add getProposal and currentPage as dependencies
 
   // Function to create a new proposal
   const createProposal = () => {
@@ -68,8 +68,8 @@ const Dashboard = () => {
 
   const navigateStep = (proposal: any) => {
     setItem('proposal_id', proposal._id); // Store the proposal_id in localStorage
-    if (proposal.step == 0) { navigate('/steps1') }
-    else navigate(`/steps${proposal.step}`)
+    if (proposal.step === 0) { navigate('/steps1') }
+    else navigate(`/steps${proposal.step}`);
   };
 
   // Function to open the delete confirmation modal
@@ -95,7 +95,7 @@ const Dashboard = () => {
       setLoadingDelete(false); // Ensure the loading state is reset
     }
   };
-  
+
   return (
     <div className="dashboard-container">
       {/* Show spinner when loading */}

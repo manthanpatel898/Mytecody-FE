@@ -1,5 +1,5 @@
 import { makeRequest } from "../api-config/api-config";
-import { Login, Proposal, Wallet } from "../utils/api-list";
+import { Wallet } from "../utils/api-list";
 
 
 export async function getWalletInfoAPI() {

@@ -1,9 +1,9 @@
 import './Step5.scss'; // Include your SCSS
 import Title from '../../../components/Title/Title';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import spinner from '../../../assets/spinner.svg';
 import { LoaderIcon } from '../../../assets/loader_icon';
-import { generateEpicsAPI, getAllEpicsApi, getStackholderAPI, getEpicsFromStackholderAPI, deleteEpicAPI, generateStoriesAPI, generateTasksAPI, deleteTaskApi, deleteEpicApi, deleteStorieApi } from '../../../service/Proposal.service'; // Import the APIs
+import { generateEpicsAPI, getAllEpicsApi, getStackholderAPI, getEpicsFromStackholderAPI, generateStoriesAPI, generateTasksAPI, deleteTaskApi, deleteEpicApi, deleteStorieApi } from '../../../service/Proposal.service'; // Import the APIs
 import { EditIcon } from '../../../assets/edit_icon';
 import { DeleteIcon } from '../../../assets/delete_icon';
 import { AddnewIcon } from '../../../assets/addnew_icon';
@@ -67,18 +67,6 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
   // Ensure proposalId is a string, fallback to empty string if null
   const proposalIdString = proposalId ?? '';
 
-  // Ensure epicId is a string, fallback to empty string if selectedEpic is null
-  const epicId = selectedEpic?.id ?? '';
-
-  const messageEndRef = useRef<HTMLDivElement>(null);
-
-  // Scroll to the bottom of the message container
-  const scrollToBottom = () => {
-    if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   // Fetch epics data when the component becomes active
   const getAllEpics = async (proposalId: string) => {
     try {
@@ -98,7 +86,8 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
     } catch (error) {
       console.error("Error fetching epics data:", error);
     }
-  };
+  }
+
 
   // Fetch Stackholder Data
   const fetchStackholderData = async (proposalId: string) => {
@@ -364,8 +353,8 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
     if (storedProposalId && !isWalletWarningVisible) {
       getAllEpics(storedProposalId); // Fetch epics when proposalId is available
     }
-  }, [isActive, isWalletWarningVisible]); // Run when the component becomes active
-
+  }, [isActive, isWalletWarningVisible]); // Include getAllEpics as a dependency
+  
   return (
     <div className="epics-container">
       {isLoading ? (

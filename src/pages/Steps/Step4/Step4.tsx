@@ -5,7 +5,6 @@ import spinner from '../../../assets/spinner.svg';
 import { getStackholderAPI, saveStackholderAPI } from '../../../service/Proposal.service'; // Import saveStackholderAPI and getWalletInfoAPI
 import { AddnewIcon } from '../../../assets/addnew_icon';
 import { CheckMarkBlueIcon } from '../../../assets/checkMarkBlue_icon';
-import { EditIcon } from '../../../assets/edit_icon';
 import { DeleteIcon } from '../../../assets/delete_icon';
 import WalletTokenWarning from '../../../components/WalletTokenWarning/WalletTokenWarning'; // Import WalletTokenWarning
 import { getWalletInfoAPI } from '../../../service/Wallet.service';
@@ -16,7 +15,6 @@ const Step4 = ({ isActive, setActiveStep, step4Data }: any) => {
   const [isSubmitStackholderData, setIsSubmitStackholderData] = useState(false); // For disabling button and showing loader
   const [stackHolderData, setStackHolderData] = useState<any>([]);
   const [isEdit, setIsEdit] = useState(false); // Control edit functionality
-  const [editIndex, setEditIndex] = useState(-1);
   const [isWalletWarningVisible, setIsWalletWarningVisible] = useState(false); // Show pop-up for insufficient tokens
 
   // Save Stackholder Data Function
@@ -144,9 +142,6 @@ const Step4 = ({ isActive, setActiveStep, step4Data }: any) => {
                   />
                   {isEdit && (
                     <div className="edit-delete-wrap">
-                      <span onClick={() => setEditIndex(index)}>
-                        <EditIcon />
-                      </span>
                       <span
                         onClick={() => {
                           const data = [...stackHolderData];

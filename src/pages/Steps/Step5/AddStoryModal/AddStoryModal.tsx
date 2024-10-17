@@ -8,13 +8,13 @@ import { addStorieAPI } from '../../../../service/Proposal.service'; // Import t
 import { DeleteIcon } from '../../../../assets/delete_icon';
 import { AddnewIcon } from '../../../../assets/addnew_icon';
 
-interface AddStoryModalProps {
-  closeModal: () => void;
-  epicId: string;
-  refreshEpics: () => void;
-  proposalId: string; // Pass the proposalId dynamically
-  stakeholder: string; // Pass the stakeholder dynamically
-}
+// interface AddStoryModalProps {
+//   closeModal: () => void;
+//   epicId: string;
+//   refreshEpics: () => void;
+//   proposalId: string; // Pass the proposalId dynamically
+//   stakeholder: string; // Pass the stakeholder dynamically
+// }
 
 const AddStoryModal = ({ closeModal, proposalId, stakeholder, epicId, refreshEpics }: any) => {
     const [title, setTitle] = useState('');

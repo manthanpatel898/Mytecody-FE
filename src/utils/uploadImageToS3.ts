@@ -9,8 +9,8 @@ console.log(process.env.REACT_APP_AWS_SECRET_KEY); // Should log your secret key
 const s3Client = new S3Client({
   region: REGION,
   credentials: {
-    accessKeyId: "AKIAZLJWOLIOKQ4W7FHQ" , // use environment variables
-    secretAccessKey: "5sOXY3S6saWD3OXuYef5GVcy9SJdwHnLBz+t2NvC",
+    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY || "", // use environment variables
+    secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY || "",
   },
 });
 

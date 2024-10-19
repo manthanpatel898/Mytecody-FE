@@ -134,31 +134,31 @@ const SpeechToText: React.FC<AppProps> = ({
   }, [error]);
 
   // Stop recording and handle microphone click
- // Handler to stop speech recognition
- const handleStopSpeech = useCallback(() => {
-  stopSpeechToText();
-  setIsplay(false);
-}, [stopSpeechToText, setIsplay]);
+  // Handler to stop speech recognition
+  const handleStopSpeech = useCallback(() => {
+    stopSpeechToText();
+    setIsplay(false);
+  }, [stopSpeechToText, setIsplay]);
 
-// Handler to stop speech recognition with delayed setBtnProcess(true)
-const handleProcessConversation = useCallback(() => {
-  stopSpeechToText();      // Stop speech recognition
-  setIsplay(false);        // Update isplay state
+  // Handler to stop speech recognition with delayed setBtnProcess(true)
+  const handleProcessConversation = useCallback(() => {
+    stopSpeechToText();      // Stop speech recognition
+    setIsplay(false);        // Update isplay state
 
-  // Set a 1-second delay before setting btnSubmit to true
-  processTimeoutRef.current = setTimeout(() => {
-    setBtnProcess(true);
-  }, 1000); // 1000 milliseconds = 1 second
-}, [stopSpeechToText, setIsplay, setBtnProcess]);
+    // Set a 1-second delay before setting btnSubmit to true
+    processTimeoutRef.current = setTimeout(() => {
+      setBtnProcess(true);
+    }, 1000); // 1000 milliseconds = 1 second
+  }, [stopSpeechToText, setIsplay, setBtnProcess]);
 
-// Cleanup timeout on component unmount to prevent memory leaks
-useEffect(() => {
-  return () => {
-    if (processTimeoutRef.current) {
-      clearTimeout(processTimeoutRef.current);
-    }
-  };
-}, []);
+  // Cleanup timeout on component unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (processTimeoutRef.current) {
+        clearTimeout(processTimeoutRef.current);
+      }
+    };
+  }, []);
   if (!isBrowserSupported) {
     return <div>Your browser does not support speech recognition.</div>;
   }
@@ -207,8 +207,14 @@ useEffect(() => {
       <div className="macrohone-wrap-main">
         {!isMobile && (
           <div className="icons-container">
-            <div onClick={isRecording ? stopSpeechToText : startSpeechToText}>
+            <div
+              className={`microphone-wrapper ${isRecording ? 'active' : 'pulse'}`}
+              onClick={isRecording ? stopSpeechToText : startSpeechToText}
+            >
               <MicrophoneIcon color={isRecording ? "green" : "red"} />
+              <div className="sound-wave"></div>
+              <div className="sound-wave"></div>
+              <div className="sound-wave"></div>
             </div>
             <div onClick={handleStopSpeech}>
               <CloseIcon color="red" />

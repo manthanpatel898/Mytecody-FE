@@ -40,32 +40,36 @@ const Step2 = ({ isActive, setActiveStep, step2Data, setStep3Data }: any) => {
 
     setIsSubmitVision(true); // Disable button and show loader
 
-    // // Check subscription status
-    const isSubscriptionValid = await checkSubscriptionStatus(SUBSCRIPTION_PLAN_1,SUBSCRIPTION_PLAN_1,setShowSubscriptionPopup);
-
-    if (!isSubscriptionValid) {
-      // If subscription is not valid, stop further execution and exit the function
-      setIsSubmitVision(false); // Enable button and hide loader
-      return;
-    }
-
-    // If subscription is valid, proceed with saving vision
     const payload = {
       project_vision: messages[messages.length - 1]?.message || "", // Get the last message as project vision
       proposal_id: proposalId, // Use the proposalId
     };
 
     try {
+      // Save the vision first
       const response = await saveVisionAPI(payload); // Pass the payload to the API
 
       if (response && response.status === "success") {
+        // If vision is saved successfully, set data for step 3
         setStep3Data(response.data.business_vertical);
         setActiveStep("STEPS3"); // Automatically set Step 3 as active after saving
+
+        // Now, check the subscription status
+        const isSubscriptionValid = await checkSubscriptionStatus(
+          SUBSCRIPTION_PLAN_1,
+          SUBSCRIPTION_PLAN_1,
+          setShowSubscriptionPopup
+        );
+
+        if (!isSubscriptionValid) {
+          // If subscription is not valid, handle accordingly (e.g., show pop-up)
+          console.log("Subscription is not valid.");
+        }
       }
     } catch (error) {
       console.error("Error while saving vision:", error);
     } finally {
-      setIsSubmitVision(false); // Enable button and hide loader after API response
+      setIsSubmitVision(false); // Enable button and hide loader after the API response
     }
   };
   // Let Me Modify Button Click Function
@@ -153,9 +157,9 @@ const Step2 = ({ isActive, setActiveStep, step2Data, setStep3Data }: any) => {
     <div className="vision-container">
       {isLoading ? (
         <div className="loading-overlay" id="loadingOverlay">
-        <div className="spinner-ldr">
-          <img src={spinner} alt="Loading..." />
-        </div>
+          <div className="spinner-ldr">
+            <img src={spinner} alt="Loading..." />
+          </div>
         </div>
       ) : isWalletWarningVisible ? (
         <WalletTokenWarning /> // Show Wallet Token Warning pop-up if tokens are insufficient

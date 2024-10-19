@@ -22,7 +22,7 @@ declare global {
 
 const Subscription = () => {
   const [stripeCustomerSession, setStripeCustomerSession] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Single loader state
   const [subscribed, setSubscribed] = useState<string | null>(null);
   const isActiveSubscription = subscribed === "active" || subscribed === "trialing";
 
@@ -42,7 +42,6 @@ const Subscription = () => {
     };
 
     const getSubscriptionStatus = async () => {
-      setLoading(true);
       try {
         const res = await verifySubscriptionAPI();
         if (res?.status === "success") {
@@ -50,7 +49,7 @@ const Subscription = () => {
           localStorage.setItem("isSubscribed", isSubscribed.toString());
           setSubscribed(res?.data?.status);
           if (!isSubscribed) {
-            fetchStripeCustomerSession();
+            await fetchStripeCustomerSession(); // Fetch session if not subscribed
           }
         } else {
           toast.error("Failed to verify subscription.");
@@ -59,7 +58,7 @@ const Subscription = () => {
         console.error("Error verifying subscription:", err);
         toast.error("Failed to verify subscription.");
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading to false after everything is done
       }
     };
 
@@ -117,23 +116,20 @@ const Subscription = () => {
     ) : <div>test</div>
   );
 
-  const SubscriptionContent = () => {
-    if (subscribed === null) return null;
-    return (
-      <>
-        <div className="header">
-          <Title />
-          <Description />
-        </div>
-        {isActiveSubscription ? <ManageSubscription /> : <PaymentElements />}
-      </>
-    );
-  };
+  const SubscriptionContent = () => (
+    <>
+      <div className="header">
+        <Title />
+        <Description />
+      </div>
+      {isActiveSubscription ? <ManageSubscription /> : <PaymentElements />}
+    </>
+  );
 
   return (
     <div className="subscriptionPageWrapper">
       {loading ? (
-        <div className="loader">
+        <div className="spinner-ldr">
           <img src={spinner} alt="Loading..." />
         </div>
       ) : (

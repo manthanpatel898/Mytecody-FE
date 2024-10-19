@@ -44,6 +44,7 @@
         height: 100%;
         object-fit: cover;
         transition: filter 0.3s ease; /* Smooth transition for blur */
+        border-radius: 50%;
       }
   
       &.blurred img {
@@ -112,16 +113,16 @@
     }
   }
   
-  .spinner-ldr {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    img {
-      width: 50px;
-      height: 50px;
-    }
-  }
+  // .spinner-ldr {
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   height: 100vh;
+  //   img {
+  //     width: 50px;
+  //     height: 50px;
+  //   }
+  // }
   
   /* Ensure that the form scrolls properly */
   .individual-profile-form form {

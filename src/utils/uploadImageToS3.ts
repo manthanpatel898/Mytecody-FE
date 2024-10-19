@@ -3,13 +3,14 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 // Load AWS credentials securely from environment variables
 const REGION = "ca-central-1";
 const S3_BUCKET = "myte-estimation-image";
-
+console.log(process.env.REACT_APP_AWS_ACCESS_KEY); // Should log your access key
+console.log(process.env.REACT_APP_AWS_SECRET_KEY); // Should log your secret key
 // Initialize the S3 client with region and credentials from environment variables
 const s3Client = new S3Client({
   region: REGION,
   credentials: {
-    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY || "", // use environment variables
-    secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY || "",
+    accessKeyId: "AKIAZLJWOLIOKQ4W7FHQ" , // use environment variables
+    secretAccessKey: "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",
   },
 });
 

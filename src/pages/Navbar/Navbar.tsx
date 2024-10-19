@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTachometerAlt, faWallet, faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTachometerAlt, faWallet, faUser, faSignOutAlt, faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.scss';
 
@@ -89,6 +89,16 @@ const Navbar: React.FC = () => {
               <span>Profile</span>
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink
+              to="/subscription"
+              className={({ isActive }) => (isActive ? 'active' : '')}
+              onClick={handleNavClick} // Close navbar when clicked
+            >
+              <FontAwesomeIcon icon={faCreditCard} />
+              <span>Subscription</span>
+            </NavLink>
+            </li>
         </ul>
 
         <ul className="nav-items logout-section">

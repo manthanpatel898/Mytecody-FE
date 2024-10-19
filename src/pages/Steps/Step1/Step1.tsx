@@ -10,6 +10,7 @@ import SpeechToText from '../../../components/SpeechToText/SpeechToText';
 import WalletTokenWarning from '../../../components/WalletTokenWarning/WalletTokenWarning'; // Import WalletTokenWarning
 import { setItem } from '../../../utils/localstorage-service';
 import { getWalletInfoAPI } from '../../../service/Wallet.service';
+import InfoPopup from '../../../components/InfoPopup/InfoPopup';
 
 interface Message {
   senderType: string;
@@ -31,7 +32,8 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
   const [resetMessage, setresetMessage] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [isConversationSubmit, setIsConversationSubmit] = useState(false);
-  console.log('isRecording',isRecording)
+  const [showMicPopup, setShowMicPopup] = useState(false);
+
   // Default message if no proposal or conversation is found
   const setDefaultMessage = () => {
     setMessages([
@@ -53,6 +55,12 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
 
   // Handle microphone button click
   const handleMicClick = () => {
+    // Show pop-up for 5 seconds
+    setShowMicPopup(true);
+    setTimeout(() => {
+      setShowMicPopup(false);
+    }, 5000);
+
     setIsSpeechModelActive(true);
     setIsRecording(true);
     setMessages((prevMessages) => {
@@ -174,28 +182,28 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
     }
   };
 
-    // Fetch project details when component mounts
-    useEffect(() => {
-      const proposalId = localStorage.getItem("proposal_id");
-      setProposalId(proposalId);
-  
-      // Fetch wallet info first
-      fetchWalletInfo();
-  
-      if (!proposalId) {
-        setDefaultMessage();
-        return;
-      }
-  
-      fetchProjectConversation(proposalId);
-    }, []);
+  // Fetch project details when component mounts
+  useEffect(() => {
+    const proposalId = localStorage.getItem("proposal_id");
+    setProposalId(proposalId);
+
+    // Fetch wallet info first
+    fetchWalletInfo();
+
+    if (!proposalId) {
+      setDefaultMessage();
+      return;
+    }
+
+    fetchProjectConversation(proposalId);
+  }, []);
 
   const handleApiError = (error: any) => {
     console.error("API Error:", error);
     setDefaultMessage();
   };
 
-  
+
   const generateConversation = async () => {
     setisLoadingProcess(true);
     let payload = {
@@ -306,6 +314,15 @@ const Step1 = ({ setActiveStep, setStep2Data }: any) => {
           )}
         </>
       )}
+
+      {showMicPopup && (
+        <InfoPopup
+          message="Click on the Microphone Icon to start the conversation."
+          icon={<MicrophoneIcon color="red" />} // Pass the icon
+          onClose={() => setShowMicPopup(false)} // Close popup after countdown
+        />
+      )}
+
 
       <div className="buttons">
         {messages.length > 1 && (

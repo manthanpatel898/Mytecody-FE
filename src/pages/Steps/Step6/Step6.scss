@@ -8,7 +8,6 @@
   .final-proposal-details-content {
     flex: 1;
     padding: 20px;
-    overflow-y: auto;
 
     @media screen and (max-width: 1024px) {
       padding: 16px; // For tablet and mobile
@@ -58,6 +57,11 @@
 
     .proposal-content {
       .content {
+        @media screen and (max-width: 767px) {
+          height: 100vh;
+          overflow-y: auto;
+        }
+
         .content-inner-wrap {
           background: $color-light-blue-2;
           padding: 24px;
@@ -71,6 +75,7 @@
           @media screen and (max-width: 767px) {
             padding: 16px;
             border-radius: 16px;
+            margin-bottom: 300px;
           }
 
           h3 {

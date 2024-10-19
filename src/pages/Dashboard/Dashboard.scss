@@ -86,10 +86,10 @@
       }
 
       .add-proposal-icon-container {
-        width: 40px;
-        height: 40px;
+        width: 200px;
+        height: 60px;
         background-color: #192655;
-        border-radius: 50%;
+        border-radius: 12px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -98,7 +98,14 @@
         .add-proposal-icon {
           font-size: 24px;
           color: white;
+          padding-right: 10px;
         }
+        .add-proposal-text {
+          font-size: 16px; // Adjust size to fit your needs
+          font-weight: 500;
+          color: white; // Customize color as needed
+        }
+      
       }
     }
 

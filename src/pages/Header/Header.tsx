@@ -46,11 +46,11 @@ const Header: React.FC = () => {
       </div>
 
       <div className="header-right">
-        <FontAwesomeIcon icon={faCog} className="icon settings-icon" onClick={settingPage}/>
+        <FontAwesomeIcon icon={faCog} className="icon settings-icon" onClick={settingPage} />
 
         <div className="profile-info">
           <span>
-            {userData?.name ? `Hey ${userData.name}!` : "Welcome to MyteCody!"}
+            {userData?.name ? `Hey ${userData.name.split(' ')[0]}!` : "Welcome to MyteCody!"}
           </span>
           {logoImage ? (
             <img

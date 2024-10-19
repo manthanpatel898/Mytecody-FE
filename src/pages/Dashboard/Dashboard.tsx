@@ -130,6 +130,7 @@ const Dashboard = () => {
               <h2>Latest Proposals</h2>
               <div className="add-proposal-icon-container" onClick={createProposal}>
                 <FaPlus className="add-proposal-icon" />
+                <span className="add-proposal-text">Build Your Dream</span>
               </div>
             </div>
             <div className="proposal-list">
@@ -143,7 +144,8 @@ const Dashboard = () => {
                       </span>
                     </div>
                     <div className='proposal-token'>
-                      <span className="proposal-number">Token Used: {proposal.tokens_used}</span>
+                      <span className="proposal-number">    Token Used: {proposal.tokens_used.toLocaleString('en-US')}
+                      </span>
                     </div>
                     <div className="proposal-info">
                       <strong>Proposal For</strong>

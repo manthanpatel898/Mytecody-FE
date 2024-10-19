@@ -10,7 +10,7 @@ const tabSteps = [
   { step: "STEPS1", label: "CONVERSATION", stage: "STAGE-1" },
   { step: "STEPS2", label: "VISION", stage: "STAGE-1" },
   { step: "STEPS3", label: "BUSINESS VERTICAL", stage: SUBSCRIPTION_PLAN_1 },
-  { step: "STEPS4", label: "STACKHOLDER", stage: SUBSCRIPTION_PLAN_1 },
+  { step: "STEPS4", label: "STAKEHOLDER", stage: SUBSCRIPTION_PLAN_1 },
   { step: "STEPS5", label: "EPICS", stage: SUBSCRIPTION_PLAN_1 },
   { step: "STEPS6", label: "PROPOSAL", stage: SUBSCRIPTION_PLAN_1 },
 ];

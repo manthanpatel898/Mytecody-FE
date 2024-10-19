@@ -50,43 +50,47 @@ const IndividualProfile: React.FC = () => {
     if (name === "email" && !value) return "Email is required";
   };
 
-  const {
-    values,
-    handleChange,
-    handleSubmit,
-    setValues,
-  } = useForm<IndividualProfileFormValues>(initialValues, validate);
+  const { values, handleChange, handleSubmit, setValues } = useForm<IndividualProfileFormValues>(initialValues, validate);
 
-  const fetchUserProfile = useCallback(() => {
-    getIndividualProfileAPI()
-      .then((response) => {
+  // Fetch user information from localStorage and populate form fields
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+
+    // Set email and name from localStorage
+    setValues((prevValues) => ({
+      ...prevValues,
+      name: userInfo.name || "",
+      email: userInfo.email || "",
+    }));
+
+    // Fetch user profile from the API
+    const fetchUserProfile = async () => {
+      try {
+        const response = await getIndividualProfileAPI();
         if (response?.status === "success") {
           const profile = response.data;
           setValues({
-            name: profile.name || "",
+            name: profile.name || userInfo.name || "",
             companyName: profile.company_name || "",
             address: profile.address || "",
             phoneNumber: profile.phone_number || "",
-            email: profile.email || "",
+            email: profile.email || userInfo.email || "", // Keep email from localStorage if not fetched
             logoImage: profile.logo_image || "",
             website: profile.website || "",
           });
           setLogoImage(profile.logo_image);
           setIsUserProfile(true);
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching individual profile:", error);
-      })
-      .finally(() => {
+      } finally {
         setIsLoading(false);
-      });
-  }, [setValues]);
-  
-  useEffect(() => {
+      }
+    };
+
     fetchUserProfile();
-  }, [fetchUserProfile]); // fetchUserProfile as a dependency here
-    
+  }, [setValues]);
+
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.size <= 10 * 1024 * 1024) {
@@ -235,6 +239,7 @@ const IndividualProfile: React.FC = () => {
             value={values.email}
             onChange={(e) => handleChange("email", e.target.value)}
             type="email"
+            disabled // Disable email input field
           />
 
           <Input

@@ -358,18 +358,23 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
   return (
     <div className="epics-container">
       {isLoading ? (
-        // <div className="loading-overlay" id="loadingOverlay">
+        <div className="loading-overlay" id="loadingOverlay">
         <div className="spinner-ldr">
           <img src={spinner} alt="Loading..." />
-          {/* </div> */}
         </div>
+      </div>
+        // <div className="loading-overlay" id="loadingOverlay">
+        // <div className="spinner-ldr">
+        //   <img src={spinner} alt="Loading..." />
+        //   {/* </div> */}
+        // </div>
       ) : isWalletWarningVisible ? (
         <WalletTokenWarning /> // Show Wallet Token Warning pop-up if tokens are insufficient
       ) : (
 
         <div className="epics-details-content">
           <div className="title-img">
-            <Title title="Epics of the Project" />
+            <Title title="PROJECT EPICS" />
           </div>
 
           {/* Render Stackholder Data */}
@@ -496,7 +501,10 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
             </div>
           </div>
 
-          <div className="buttons">
+        </div>
+      )}
+
+<div className="buttons">
             {/* Conditionally render the "Generate Stories" button */}
             {epicsData.length > 0 && (!epicsData[0].user_stories || epicsData[0].user_stories.length === 0) && (
               <button className="btn btn-primary" onClick={generateStories}>
@@ -530,9 +538,6 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
               )
             }
           </div>
-        </div>
-      )}
-
       {/* Conditionally render the Add Epic Modal */}
       {showModal && (
         <AddEpicModal
@@ -584,11 +589,11 @@ const Step5 = ({ isActive, setActiveStep }: any) => {
       )}
       {/* Modal to show during story generation */}
       {isGeneratingStories && (
-        <LoadingModal message="Stories are generating, please keep some patience..." />
+        <LoadingModal message="I'm thinking, give me a moment..." />
       )}
 
       {isGeneratingTasks && (
-        <LoadingModal message="Tasks are generating, please keep some patience..." />
+        <LoadingModal message="I'm thinking, give me a moment..." />
       )}
 
       {isAddStoryModalOpen && selectedEpic && (

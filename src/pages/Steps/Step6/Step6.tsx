@@ -9,6 +9,7 @@ import WalletTokenWarning from '../../../components/WalletTokenWarning/WalletTok
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import ProfileCompletionPopUp from '../../../components/ProfileCompletionPopUp/ProfileCompletionPopUp'; // Import custom ProfileCompletionPopUp
 import { getIndividualProfileAPI } from '../../../service/IndividualProfile.service';
+import { toast } from 'react-toastify';
 
 const Step6 = ({ setActiveStep }: any) => {
   const [isLoading, setIsLoading] = useState(false); // State for loader
@@ -29,7 +30,8 @@ const Step6 = ({ setActiveStep }: any) => {
           setIsWalletWarningVisible(true); // Show wallet warning if tokens are insufficient
         } else {
           // Fetch proposal data if tokens are sufficient
-          await fetchProposalData(proposalId!);
+          if(proposalId)
+          await fetchProposalData(proposalId);
         }
       }
     } catch (error) {
@@ -79,6 +81,7 @@ const Step6 = ({ setActiveStep }: any) => {
       const response = await sendProposalAPI(id); // Call the API to send the proposal
       if (response?.status === 'success') {
         console.log('Proposal sent successfully.');
+        toast.success('Proposal sent successfully.')
       } else {
         console.error('Error sending proposal:', response);
       }
@@ -106,16 +109,21 @@ const Step6 = ({ setActiveStep }: any) => {
     navigate('/individual-profile'); // Redirect to individual profile page
   };
 
-  // Fetch individual profile on mount
   useEffect(() => {
     const storedProposalId = localStorage.getItem("proposal_id"); // Get proposal_id from localStorage
     if (storedProposalId) {
       setProposalId(storedProposalId);
-      fetchIndividualProfile(); // Fetch the individual profile data
     } else {
       setIsLoading(false); // Stop loading if no proposal ID is found
     }
   }, []);
+  
+  // New useEffect to handle fetching profile and wallet info once proposalId is set
+  useEffect(() => {
+    if (proposalId) {
+      fetchIndividualProfile(); // Fetch the individual profile data
+    }
+  }, [proposalId]); // Only fetch the profile and wallet info after proposalId is set
 
   return (
     <div className="final-proposal-container">
@@ -171,7 +179,7 @@ const Step6 = ({ setActiveStep }: any) => {
                       </div>
 
                       {/* Email Proposal Button */}
-                      <button
+                      {/* <button
                         onClick={() => proposalId && sendProposal(proposalId)}
                         className="btn btn-primary"
                         disabled={isSendingProposal} // Disable button while sending
@@ -183,7 +191,7 @@ const Step6 = ({ setActiveStep }: any) => {
                             <DownloadIcon /> Email Proposal
                           </>
                         )}
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 )}
@@ -192,7 +200,7 @@ const Step6 = ({ setActiveStep }: any) => {
           </div>
         </div>
       )}
-      
+
       {/* Profile Completion Pop-Up */}
       {showProfilePopUp && (
         <ProfileCompletionPopUp
@@ -203,8 +211,14 @@ const Step6 = ({ setActiveStep }: any) => {
       )}
 
       <div className="buttons">
-        <button className="btn btn-primary" onClick={handleNext}>
-          Submit
+        <button className="btn btn-primary" onClick={() => proposalId && sendProposal(proposalId)}>
+          {isSendingProposal ? (
+            <img src={spinner} alt="Sending..." width={24} /> // Show spinner when sending
+          ) : (
+            <>
+              <DownloadIcon /> Email Proposal
+            </>
+          )}
         </button>
       </div>
     </div>

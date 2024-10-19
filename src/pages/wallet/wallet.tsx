@@ -6,6 +6,9 @@ import AddTokenModel from "./addTokenModel/addTokenModel";
 import { toast } from "react-toastify";
 import refreshImg from "../../assets/settings 1.svg";
 import { getWalletInfoAPI, rechargeWalletAPI } from "../../service/Wallet.service";
+import { checkSubscriptionStatus } from "../../utils/subscriptionUtils";
+import { SUBSCRIPTION_PLAN_1 } from "../../utils/constants";
+import SubscriptionPopUp from "../SubscriptionPopUp/SubscriptionPopUp";
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY || "");
@@ -20,6 +23,7 @@ const Wallet = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentIntent, setPaymentIntent] = useState<PaymentIntent | null>(null);
   // const [paymentResponse, setPaymentResponse] = useState<PaymentIntent | null>(null);
+  const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false); // Flag for showing the subscription pop-up
 
   // Fetch wallet information
   const fetchWalletInfo = async () => {
@@ -78,6 +82,17 @@ const Wallet = () => {
     fetchWalletInfo();
   }, []);
 
+  // Buy Tokens button handler
+  const buyNewToken = async () => {
+    const isSubscriptionValid = await checkSubscriptionStatus(SUBSCRIPTION_PLAN_1, SUBSCRIPTION_PLAN_1, setShowSubscriptionPopup);
+
+    if (isSubscriptionValid) {
+      setIsModalOpen(true); // Open Buy Tokens modal if subscribed
+    } else {
+      setShowSubscriptionPopup(true); // Open Subscription pop-up if not subscribed
+    }
+  };
+
   return (
     <Elements stripe={stripePromise}>
       <div className="wallet-outer">
@@ -99,15 +114,15 @@ const Wallet = () => {
           </div>
         </div>
         <div className="color-indicators">
-  <div className="indicator-item available-indicator">
-    <div className="indicator-box"></div>
-    <span>Available Tokens</span>
-  </div>
-  <div className="indicator-item consumed-indicator">
-    <div className="indicator-box"></div>
-    <span>Consumed Tokens</span>
-  </div>
-</div>
+          <div className="indicator-item available-indicator">
+            <div className="indicator-box"></div>
+            <span>Available Tokens</span>
+          </div>
+          <div className="indicator-item consumed-indicator">
+            <div className="indicator-box"></div>
+            <span>Consumed Tokens</span>
+          </div>
+        </div>
 
         {/* Token Information Section */}
         <div className="available-summary">
@@ -136,7 +151,7 @@ const Wallet = () => {
         {/* CTA Section */}
         <div className="purchase-cta">
           <p>You can purchase more tokens. Click the button below.</p>
-          <button className="buy-tokens-btn" onClick={() => setIsModalOpen(true)}>
+          <button className="buy-tokens-btn" onClick={buyNewToken}>
             Buy Tokens Now
           </button>
         </div>
@@ -149,6 +164,12 @@ const Wallet = () => {
           paymentIntent={paymentIntent}
           onPaymentComplete={handlePaymentComplete}
         />
+
+        <SubscriptionPopUp
+          show={showSubscriptionPopup}
+          handleClose={() => setShowSubscriptionPopup(false)}
+        />
+
       </div>
     </Elements>
   );
